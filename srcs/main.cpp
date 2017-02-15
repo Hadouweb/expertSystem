@@ -3,7 +3,7 @@
 #include "Lexer.class.hpp"
 #include "Parser.class.hpp"
 
-/*int		main(int ac, char **av) {
+int		main(int ac, char **av) {
 	Lexer * l;
 
 	if (ac > 1)
@@ -16,7 +16,7 @@
 
 	if (errorList.size() > 0) {
 		l->printError();
-		exit(1);
+		//exit(1);
 	}
 
 	// DEBUG
@@ -29,10 +29,10 @@
 
 
 	return 0;
-}*/
+}
 
 
-int 	main(int ac, char **av) {
+/*int 	main(int ac, char **av) {
 	if (ac > 1 && av[1])
 		;
 	else
@@ -60,4 +60,4 @@ int 	main(int ac, char **av) {
 	}
 
 	return 0;
-}
+}*/

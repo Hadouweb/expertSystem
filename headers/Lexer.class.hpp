@@ -44,6 +44,7 @@ private:
 	void pushError(unsigned int line, unsigned int col);
 	bool matchToken(const char c);
 	e_tk getTokenFound(void);
+	e_tk findCaracter(char c, unsigned int numCol, unsigned int numLine, bool reCheck);
 
 	e_sts tkFact(const char c, const uint8_t index);
 	e_sts tkInitFact(const char c, const uint8_t index);
@@ -52,8 +53,8 @@ private:
 	e_sts tkPlus(const char c, const uint8_t index);
 	e_sts tkNot(const char c, const uint8_t index);
 	e_sts tkOr(const char c, const uint8_t index);
-	e_sts tkIfAndOnlyIf(const char c, const uint8_t index);
 	e_sts tkXor(const char c, const uint8_t index);
+	e_sts tkIfAndOnlyIf(const char c, const uint8_t index);
 	e_sts tkParOpen(const char c, const uint8_t index);
 	e_sts tkParClose(const char c, const uint8_t index);
 	e_sts tkComment(const char c, const uint8_t index);
@@ -69,11 +70,11 @@ private:
 		&Lexer::tkInitFact,
 		&Lexer::tkQuery,
 		&Lexer::tkImplie,
-		&Lexer::tkIfAndOnlyIf,
 		&Lexer::tkPlus,
 		&Lexer::tkNot,
 		&Lexer::tkOr,
 		&Lexer::tkXor,
+		&Lexer::tkIfAndOnlyIf,
 		&Lexer::tkParOpen,
 		&Lexer::tkParClose,
 		&Lexer::tkComment,

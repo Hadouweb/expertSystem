@@ -45,38 +45,43 @@ std::list<Node *> Lexer::getErrorList(void) const {
 
 #define TOKEN_DEFINE_1(funcName, str) \
 e_sts Lexer::funcName(const char c, const uint8_t index) { \
-	switch(this->_state[index]) { \
-		case 0: return c == str[0] ? (this->_state[index] = 1, STS_ACCEPT) : (this->_state[index] = 0, STS_REJECT); \
-		case 1: return this->_state[index] = 0, STS_REJECT; \
+	unsigned int s = this->_chunk[index].length(); \
+	switch(s) { \
+		case 0: return c == str[0] ? (this->_chunk[index] = c, STS_ACCEPT) : ( STS_REJECT); \
+		case 1: return  STS_REJECT; \
 		default: abort(); \
 	} \
 }
 
 #define TOKEN_DEFINE_2(funcName, str) \
 e_sts Lexer::funcName(const char c, const uint8_t index) { \
-	switch(this->_state[index]) { \
-		case 0: return c == str[0] ? (this->_state[index] = 1, STS_HUNGRY) : (this->_state[index] = 0, STS_REJECT); \
-		case 1: return c == str[1] ? (this->_state[index] = 2, STS_ACCEPT) : (this->_state[index] = 0, STS_REJECT); \
-		case 2: return this->_state[index] = 0, STS_REJECT; \
+	unsigned int s = this->_chunk[index].length(); \
+	switch(s) { \
+		case 0: return c == str[0] ? (this->_chunk[index] = c, STS_HUNGRY) : ( STS_REJECT); \
+		case 1: return c == str[1] ? (this->_chunk[index] += c, STS_ACCEPT) : ( STS_REJECT); \
+		case 2: return  STS_REJECT; \
 		default: abort(); \
 	} \
 }
 
 #define TOKEN_DEFINE_3(funcName, str) \
 e_sts Lexer::funcName(const char c, const uint8_t index) { \
-	switch(this->_state[index]) { \
-		case 0: return c == str[0] ? (this->_state[index] = 1, STS_HUNGRY) : (this->_state[index] = 0, STS_REJECT); \
-		case 1: return c == str[1] ? (this->_state[index] = 2, STS_HUNGRY) : (this->_state[index] = 0, STS_REJECT); \
-		case 2: return c == str[2] ? (this->_state[index] = 3, STS_ACCEPT) : (this->_state[index] = 0, STS_REJECT); \
-		case 3: return this->_state[index] = 0, STS_REJECT; \
+	unsigned int s = this->_chunk[index].length(); \
+	switch(s) { \
+		case 0: return c == str[0] ? (this->_chunk[index] = c, STS_HUNGRY) : (STS_REJECT); \
+		case 1: return c == str[1] ? (this->_chunk[index] += c, STS_HUNGRY) : (STS_REJECT); \
+		case 2: return c == str[2] ? (this->_chunk[index] += c, STS_ACCEPT) : (STS_REJECT); \
+		case 3: return STS_REJECT; \
 		default: abort(); \
 	} \
 }
 
+TOKEN_DEFINE_1(tkInitFact, "=");
+TOKEN_DEFINE_1(tkQuery, "?");
 TOKEN_DEFINE_2(tkImplie, "=>");
 TOKEN_DEFINE_3(tkIfAndOnlyIf, "<=>");
 TOKEN_DEFINE_1(tkPlus, "+");
-TOKEN_DEFINE_1(tkNot, "!)");
+TOKEN_DEFINE_1(tkNot, "!");
 TOKEN_DEFINE_1(tkOr, "|");
 TOKEN_DEFINE_1(tkXor, "^");
 TOKEN_DEFINE_1(tkParOpen, "(");
@@ -85,62 +90,18 @@ TOKEN_DEFINE_1(tkComment, "#");
 TOKEN_DEFINE_1(tkEndLine, "\n");
 
 e_sts Lexer::tkFact(const char c, const uint8_t index) {
-	this->_state[index] = 0;
-	if (c >= 'A' && c <= 'Z')
+	if (this->_chunk[index].length() == 0 && c >= 'A' && c <= 'Z') {
+		this->_chunk[index] = c;
 		return STS_ACCEPT;
+	}
 	return STS_REJECT;
 }
 
-e_sts Lexer::tkInitFact(const char c, const uint8_t index) {
-	switch(this->_state[index]) {
-		case 0: return c == '=' ? (this->_state[index] = 1, STS_HUNGRY) : (this->_state[index] = 0, STS_REJECT);
-		default: {
-			if (this->_state[index] < 0)
-				abort();
-			else {
-				if (c >= 'A' && c <= 'Z') {
-					this->_state[index]++;
-					return STS_HUNGRY;
-				} else if (c == ' ' || c == '\t' || c == '#') {
-					this->_state[index] = 0;
-					return STS_ACCEPT;
-				} else {
-					this->_state[index] = 0;
-					return STS_REJECT;
-				}
-			}
-		};
-	}
-}
-
-e_sts Lexer::tkQuery(const char c, const uint8_t index) {
-	switch(this->_state[index]) {
-		case 0: return c == '?' ? (this->_state[index] = 1, STS_HUNGRY) : (this->_state[index] = 0, STS_REJECT);
-		default: {
-			if (this->_state[index] < 0)
-				abort();
-			else {
-				if (c >= 'A' && c <= 'Z') {
-					this->_state[index]++;
-					return STS_HUNGRY;
-				} else if (c == ' ' || c == '\t' || c == '#') {
-					this->_state[index]++;
-					return STS_ACCEPT;
-				} else {
-					this->_state[index] = 0;
-					return STS_REJECT;
-				}
-			}
-		};
-	}
-}
-
 e_sts Lexer::tkWhiteSpace(const char c, const uint8_t index) {
-	this->_state[index] = 0;
-	if (c == '\t')
+	if (c == '\t' || c == ' ') {
+		this->_chunk[index] = c;
 		return STS_ACCEPT;
-	else if (c == ' ')
-		return STS_ACCEPT;
+	}
 	return STS_REJECT;
 }
 
@@ -159,7 +120,6 @@ bool Lexer::matchToken(const char c) {
 			this->_status[i].curr = (this->**it)(c, i);
 		if (this->_status[i].curr != STS_REJECT) {
 			find = true;
-			this->_chunk[i] += c;
 		}
 		i++;
 	}
@@ -185,7 +145,7 @@ e_tk Lexer::getTokenFound(void) {
 enum e_tk Lexer::pushToken(unsigned int line, unsigned int col) {
 	e_tk token = getTokenFound();
 	int index = static_cast<int>(token);
-	if (token != NB_TK && token != TK_COMMENT)
+	if (token != NB_TK)
 		this->_nodeList.push_back(new Node(token, this->_chunk[index], line, col));
 	return token;
 }
@@ -207,46 +167,42 @@ void Lexer::forEachLine(std::istream & is) {
 	}
 }
 
+e_tk Lexer::findCaracter(char c, unsigned int numCol, unsigned int numLine, bool reCheck) {
+	//std::cout << "|" << c << "| " << std::endl;
+	//this->printStatus();
+	//std::cout << std::endl;
+	if (matchToken(c)) {
+		this->updateStatus();
+	} else {
+		e_tk token = this->pushToken(numLine, numCol);
+		if (token == NB_TK) {
+			if (reCheck == false)
+				this->findCaracter(c, numCol, numLine, true); 	// Last check token exemple <=>B
+			else
+				this->pushError(numLine, numCol);
+		} else
+			this->findCaracter(c, numCol, numLine, false); 		// Check current token after match previous exemple A<=>
+
+		return token;
+	}
+	return NB_TK;
+}
+
 bool Lexer::forEachChar(std::string & line, unsigned int numLine) {
-	unsigned int i = 0;
+	unsigned int tmpCol = 0;
 	unsigned int numCol = 0;
 	std::string::iterator it = line.begin();
 
 	while (it != line.end()) {
-		//std::cout << "HERE0" << std::endl;
-		//std::cout << "|" << *it << "| " << std::endl;
-		//this->printStatus();
-		//std::cout << std::endl;
-		//std::cout << "HERE0.5" << std::endl;
-		if (matchToken(*it)) {
-			//std::cout << "HERE1" << std::endl;
-			this->updateStatus();
-			it++;
-			i++;
-		} else {
-			//std::cout << "HERE2" << std::endl;
-			e_tk token = this->pushToken(numLine, numCol);
-			if (token == NB_TK) {
-				this->pushError(numLine, numCol);
-				if (matchToken(*it))
-					this->updateStatus();
-				it++;
-			}
-			if (token == TK_COMMENT) {
-				return false ;
-			}
-			if (token == TK_END_LINE) {
-				i = 0;
-			}
-			numCol = i;
-		}
+		e_tk token = findCaracter(*it, numCol, numLine, false);
+		if (token != NB_TK)
+			numCol = tmpCol;
+		if (token == TK_COMMENT)
+			return false;
+		it++;
+		tmpCol++;
 	}
-
-	if (matchToken(*it))
-		this->updateStatus();
-	e_tk token = this->pushToken(numLine, numCol);
-	if (token)
-		;
+	this->pushToken(numLine, numCol);
 	return false;
 }
 
@@ -293,8 +249,8 @@ std::string Lexer::convertStsEnum(enum e_sts sts) {
 void Lexer::printStatus(void) {
 	for(int i = 0; i < NB_TK; i++) {
 		e_tk tk = static_cast<e_tk>(i);
-		std::cout << std::setw(25) <<Node::convertEnumTk(tk) << " | ";
-		std::cout << (int)this->_state[i] << " | ";
+		std::cout << std::setw(25) <<Node::convertEnumTk(tk) << " |";
+		std::cout << this->_chunk[i] << "| ";
 		std::cout << this->_status[i];
 	}
 }
