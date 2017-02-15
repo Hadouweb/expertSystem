@@ -24,7 +24,7 @@ int		main(int ac, char **av) {
 	for (std::list<Node*>::iterator it = nodeList.begin(); it != nodeList.end(); ++it) {
 		std::cout << *(*it);
 	}
-
+	std::cout << "Size List : " << nodeList.size() << std::endl;
 
 
 

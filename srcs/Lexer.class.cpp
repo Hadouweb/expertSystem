@@ -1,13 +1,13 @@
 #include "Lexer.class.hpp"
 
 Lexer::Lexer(void)
-	: _status(NB_TK, { STS_HUNGRY, STS_REJECT } ), _state(NB_TK), _chunk(NB_TK) {
+	: _status(NB_TK, { STS_HUNGRY, STS_REJECT } ), _chunk(NB_TK) {
 	this->_modeCin = true;
 	this->forEachLine(std::cin);
 }
 
 Lexer::Lexer(std::string fileName)
-	: _status(NB_TK, { STS_HUNGRY, STS_REJECT } ), _state(NB_TK), _chunk(NB_TK) {
+	: _status(NB_TK, { STS_HUNGRY, STS_REJECT } ), _chunk(NB_TK) {
 	std::ifstream ifs(fileName);
 	if (!ifs.good()) {
 		std::cerr << "File not found" << std::endl;
@@ -90,8 +90,8 @@ TOKEN_DEFINE_1(tkComment, "#");
 TOKEN_DEFINE_1(tkEndLine, "\n");
 
 e_sts Lexer::tkFact(const char c, const uint8_t index) {
-	if (this->_chunk[index].length() == 0 && c >= 'A' && c <= 'Z') {
-		this->_chunk[index] = c;
+	if (c >= 'A' && c <= 'Z') {
+		this->_chunk[index] += c;
 		return STS_ACCEPT;
 	}
 	return STS_REJECT;
@@ -99,7 +99,7 @@ e_sts Lexer::tkFact(const char c, const uint8_t index) {
 
 e_sts Lexer::tkWhiteSpace(const char c, const uint8_t index) {
 	if (c == '\t' || c == ' ') {
-		this->_chunk[index] = c;
+		this->_chunk[index] += c;
 		return STS_ACCEPT;
 	}
 	return STS_REJECT;

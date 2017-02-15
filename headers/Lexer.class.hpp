@@ -95,7 +95,6 @@ private:
 	void printStatus(void);
 
 	std::vector<Status> _status;
-	std::vector<uint8_t> _state;
 	std::vector<std::string> _chunk;
 	bool _modeCin;
 };
