@@ -88,8 +88,8 @@ TOKEN_DEFINE_1(tkComment, "#");
 TOKEN_DEFINE_1(tkEndLine, "\n");
 
 e_sts Lexer::tkFact(const char c, const uint8_t index) {
-	if (c >= 'A' && c <= 'Z') {
-		this->_chunk[index] += c;
+	if (this->_chunk[index].length() == 0 && c >= 'A' && c <= 'Z') {
+		this->_chunk[index] = c;
 		return STS_ACCEPT;
 	}
 	return STS_REJECT;

@@ -1,3 +1,6 @@
-( => !B
-=ABC
-?DBD
+A | B => C
+C + A => D
+
+=ADZE
+
+?DB
