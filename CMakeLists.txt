@@ -10,11 +10,19 @@ set(SOURCE_FILES
     headers/Node.class.hpp
     headers/ParsedNode.class.hpp
     headers/Parser.class.hpp
+    headers/Fact.class.hpp
+    headers/Rule.class.hpp
+    headers/RuleBase.class.hpp
+    headers/FactBase.class.hpp
     srcs/Lexer.class.cpp
     srcs/main.cpp
     srcs/Node.class.cpp
     srcs/ParsedNode.class.cpp
     srcs/Parser.class.cpp
+    srcs/Fact.class.cpp
+    srcs/Rule.class.cpp
+    srcs/FactBase.class.cpp
+    srcs/RuleBase.class.cpp
     CMakeLists.txt
     Makefile
     test1.txt

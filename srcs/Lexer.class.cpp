@@ -2,7 +2,6 @@
 
 Lexer::Lexer(void)
 	: _status(NB_TK, { STS_HUNGRY, STS_REJECT } ), _chunk(NB_TK) {
-	this->_modeCin = true;
 	this->forEachLine(std::cin);
 }
 
@@ -13,7 +12,6 @@ Lexer::Lexer(std::string fileName)
 		std::cerr << "File not found" << std::endl;
 		exit(1);
 	}
-	this->_modeCin = false;
 	this->forEachLine(ifs);
 }
 
@@ -145,7 +143,7 @@ e_tk Lexer::getTokenFound(void) {
 enum e_tk Lexer::pushToken(unsigned int line, unsigned int col) {
 	e_tk token = getTokenFound();
 	int index = static_cast<int>(token);
-	if (token != NB_TK)
+	if (token != NB_TK && token != TK_COMMENT)
 		this->_nodeList.push_back(new Node(token, this->_chunk[index], line, col));
 	return token;
 }
@@ -160,9 +158,9 @@ void Lexer::forEachLine(std::istream & is) {
 	unsigned int numLine = 0;
 
 	while (getline(is, line)) {
+		this->_nodeList.push_back(new Node(TK_END_LINE, "", numLine, line.length()));
 		if (this->forEachChar(line, numLine) == true)
 			break ;
-		this->_nodeList.push_back(new Node(TK_END_LINE, "", numLine, line.length()));
 		numLine++;
 	}
 }

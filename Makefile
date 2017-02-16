@@ -12,6 +12,10 @@ SRC =   $(SRC_PATH)/main.cpp\
         $(SRC_PATH)/Parser.class.cpp\
         $(SRC_PATH)/Lexer.class.cpp\
         $(SRC_PATH)/ParsedNode.class.cpp\
+        $(SRC_PATH)/Fact.class.cpp\
+        $(SRC_PATH)/FactBase.class.cpp\
+        $(SRC_PATH)/Rule.class.cpp\
+        $(SRC_PATH)/RuleBase.class.cpp\
 
 OBJ = $(SRC:%.cpp=%.o)
 

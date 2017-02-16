@@ -96,7 +96,6 @@ private:
 
 	std::vector<Status> _status;
 	std::vector<std::string> _chunk;
-	bool _modeCin;
 };
 
 std::ostream & operator<<(std::ostream & os, Status & s);

@@ -1,7 +1,9 @@
+#include <RuleBase.class.hpp>
 #include "Parser.class.hpp"
 
 Parser::Parser(std::list<Node *> nodeList)
 	: _nodeList(nodeList) {
+	this->_currentIt = this->_nodeList.begin();
 	this->makeParsing();
 }
 
@@ -28,12 +30,14 @@ Error::Error(unsigned int col, unsigned int line, std::string type)
 }
 
 void Parser::makeParsing(void) {
-	for (std::list<Node*>::iterator it = this->_nodeList.begin(); it != this->_nodeList.end(); ++it) {
+	std::list<Node*>::iterator & it = this->_currentIt;
+	while (it != this->_nodeList.end()) {
 		instrMapType::iterator it2 = this->_instrCheckerMap.find((*it)->getToken());
 		if (it2 != this->_instrCheckerMap.end()) {
 			this->_currentIt = it;
 			(this->*it2->second)();
-		}
+		} else
+			it++;
 	}
 }
 
@@ -42,7 +46,7 @@ bool Parser::endLine(void) {
 	if (*it)
 		;
 
-	/*while (it != this->_nodeList.end() && (*it)->getToken() == TK_WHITE_SPACE)
+	while (it != this->_nodeList.end() && (*it)->getToken() == TK_WHITE_SPACE)
 		it++;
 	if (it != this->_nodeList.end()) {
 		if ((*it)->getToken() == TK_COMMENT)
@@ -51,130 +55,224 @@ bool Parser::endLine(void) {
 			return true;
 		}
 		this->pushError((*it)->getNumCol(), (*it)->getNumLine(), "end line expected");
-	}*/
+	}
 	return false;
 }
 
-void Parser::parseInstrPush(void) {
+bool Parser::authorizedOperator(e_tk token) {
+	switch (token) {
+		case TK_IMPLIE:
+			return true;
+		case TK_PLUS:
+			return true;
+		case TK_NOT:
+			return true;
+		case TK_OR:
+			return true;
+		case TK_XOR:
+			return true;
+		case TK_IF_AND_ONLY_IF:
+			return true;
+		case TK_PAR_OPEN:
+			return true;
+		case TK_PAR_CLOSE:
+			return true;
+		default:
+			return false;
+	}
+}
+
+void Parser::skipSpace(void) {
 	std::list<Node*>::iterator & it = this->_currentIt;
-
-	unsigned int col = (*it)->getNumCol();
-	unsigned int line = (*it)->getNumLine();
-	bool valid = false;
-
-	it++;
-	if (it != this->_nodeList.end()) {
-		if ((*it)->getToken() == TK_WHITE_SPACE)
-			it++;
-		else
-			this->pushError((*it)->getNumCol(), (*it)->getNumLine(), "space expected");
-	} else
-		this->pushError(col, line, "space expected");
-
-	if (it != this->_nodeList.end()) {
-		col = (*it)->getNumCol();
-		line = (*it)->getNumLine();
-		if (this->isValue(*it)) {
-			valid = true;
-		} else
-			this->pushError((*it)->getNumCol(), (*it)->getNumLine(), "value type expected");
-	} else
-		this->pushError(col, line, "value type expected");
-
-	if (valid) {
-		this->_parsedNodeList.push_back(new ParsedNode(NB_TK, (*it)->getToken(), (*it)->getValue()));
+	while (it != this->_nodeList.end() && (*it)->getToken() == TK_WHITE_SPACE)
 		it++;
-		this->endLine();
-	} else
-		this->pushError(col, line, "value type expected");
 }
 
-void Parser::parseInstrAssert(void) {
+void Parser::tkFact(void) {
 	std::list<Node*>::iterator & it = this->_currentIt;
-
+	std::list<Node*>::iterator tmpIt = it;
 	unsigned int col = (*it)->getNumCol();
 	unsigned int line = (*it)->getNumLine();
-	bool valid = false;
+	bool leftFact = false;
+	bool rightFact = false;
 
+
+	while (tmpIt != this->_nodeList.begin()) {
+		tmpIt--;
+		if ((*tmpIt)->getToken() == TK_IMPLIE ||
+			(*tmpIt)->getToken() == TK_IF_AND_ONLY_IF) {
+			leftFact = true;
+			break;
+		}
+		//if ((*tmpIt)->getToken() == TK_END_LINE)
+		//	break;
+	}
+
+	tmpIt = it;
+	while (tmpIt != this->_nodeList.end()) {
+		if ((*tmpIt)->getToken() == TK_IMPLIE ||
+			(*tmpIt)->getToken() == TK_IF_AND_ONLY_IF) {
+			rightFact = true;
+			break;
+		}
+		//if ((*tmpIt)->getToken() == TK_END_LINE)
+		//	break;
+		tmpIt++;
+	}
+
+	this->skipSpace();
+	if (it != this->_nodeList.end()) {
+		if (leftFact || rightFact) {
+			this->_parsedNodeList.push_back(new ParsedNode((*it)->getToken(), (*it)->getValue()));
+			it++;
+		} else
+			this->pushError((*it)->getNumCol(), (*it)->getNumLine(), "Unexpected token");
+	} else
+		this->pushError(col, line, "Character expected");
+}
+
+void Parser::tkInitFact(void) {
+	std::list<Node*>::iterator & it = this->_currentIt;
+	std::list<Node*>::iterator tmpItPrev = std::prev(it, 1);
 	it++;
 	if (it != this->_nodeList.end()) {
-		if ((*it)->getToken() == TK_WHITE_SPACE)
-			it++;
-		else
-			this->pushError((*it)->getNumCol(), (*it)->getNumLine(), "space expected");
-	} else
-		this->pushError(col, line, "space expected");
-
-	if (it != this->_nodeList.end()) {
-		col = (*it)->getNumCol();
-		line = (*it)->getNumLine();
-		if (this->isValue(*it)) {
-			valid = true;
+		if ((*tmpItPrev)->getToken() == TK_END_LINE) {
+			if ((*it)->getToken() == TK_FACT) {
+				this->_parsedNodeList.push_back(new ParsedNode(TK_INIT_FACT, (*it)->getValue()));
+				it++;
+			}
+			else
+				this->pushError((*it)->getNumCol(), (*it)->getNumLine(), "Unexpected token");
 		} else
-			this->pushError((*it)->getNumCol(), (*it)->getNumLine(), "value type expected");
+			this->pushError((*it)->getNumCol(), (*it)->getNumLine(), "Unexpected token");
 	} else
-		this->pushError(col, line, "value type expected");
+		this->pushError((*it)->getNumCol(), (*it)->getNumLine(), "Character expected");
+}
 
-	if (valid) {
-		this->_parsedNodeList.push_back(new ParsedNode(NB_TK, (*it)->getToken(), (*it)->getValue()));
-		this->_currentIt++;
-		this->endLine();
+void Parser::tkQuery(void) {
+	std::list<Node*>::iterator & it = this->_currentIt;
+	std::list<Node*>::iterator tmpItPrev = std::prev(it, 1);
+	it++;
+	if (it != this->_nodeList.end()) {
+		if ((*tmpItPrev)->getToken() == TK_END_LINE) {
+			if ((*it)->getToken() == TK_FACT) {
+				this->_parsedNodeList.push_back(new ParsedNode(TK_QUERY, (*it)->getValue()));
+				it++;
+			}
+			else
+				this->pushError((*it)->getNumCol(), (*it)->getNumLine(), "Unexpected token");
+		} else
+			this->pushError((*it)->getNumCol(), (*it)->getNumLine(), "Unexpected token");
 	} else
-		this->pushError(col, line, "value type expected");
+		this->pushError((*it)->getNumCol(), (*it)->getNumLine(), "Character expected");
 }
 
-void Parser::parseInstrPop(void) {
-	this->_parsedNodeList.push_back(new ParsedNode(NB_TK, NB_TK, ""));
-	this->_currentIt++;
-	this->endLine();
+void Parser::tkImplie(void) {
+	std::list<Node*>::iterator & it = this->_currentIt;
+	std::list<Node*>::iterator tmpIt = it;
+	bool leftFact = false;
+	bool rightFact = false;
+
+	while (tmpIt != this->_nodeList.begin()) {
+		tmpIt--;
+		if ((*tmpIt)->getToken() == TK_FACT) {
+			leftFact = true;
+			break;
+		} else if ((*tmpIt)->getToken() != TK_WHITE_SPACE &&
+				   (*tmpIt)->getToken() != TK_PAR_CLOSE)
+			break;
+	}
+
+	if (leftFact) {
+		tmpIt = it;
+		while (tmpIt != this->_nodeList.end()) {
+			tmpIt++;
+			if ((*tmpIt)->getToken() == TK_FACT) {
+				rightFact = true;
+				break;
+			} else if ((*tmpIt)->getToken() != TK_WHITE_SPACE &&
+						(*tmpIt)->getToken() != TK_NOT &&
+						(*tmpIt)->getToken() != TK_PAR_OPEN)
+				break;
+		}
+		if (rightFact) {
+			this->_parsedNodeList.push_back(new ParsedNode((*it)->getToken(), (*it)->getValue()));
+		} else
+			this->pushError((*it)->getNumCol(), (*it)->getNumLine(), "Unexpected token");
+	} else
+		this->pushError((*it)->getNumCol(), (*it)->getNumLine(), "Unexpected token");
+	it++;
 }
 
-void Parser::parseInstrDump(void) {
-	this->_parsedNodeList.push_back(new ParsedNode(NB_TK, NB_TK, ""));
-	this->_currentIt++;
-	this->endLine();
+void Parser::tkPlus(void) {
+	std::list<Node*>::iterator & it = this->_currentIt;
+	std::list<Node*>::iterator tmpIt = it;
+	bool leftFact = false;
+	bool rightFact = false;
+
+	while (tmpIt != this->_nodeList.begin()) {
+		tmpIt--;
+		if ((*tmpIt)->getToken() == TK_FACT) {
+			leftFact = true;
+			break;
+		} else if ((*tmpIt)->getToken() != TK_WHITE_SPACE &&
+				   (*tmpIt)->getToken() != TK_PAR_CLOSE)
+			break;
+	}
+
+	if (leftFact) {
+		tmpIt = it;
+		while (tmpIt != this->_nodeList.end()) {
+			tmpIt++;
+			if ((*tmpIt)->getToken() == TK_FACT) {
+				rightFact = true;
+				break;
+			} else if ((*tmpIt)->getToken() != TK_WHITE_SPACE &&
+					   (*tmpIt)->getToken() != TK_NOT &&
+					   (*tmpIt)->getToken() != TK_PAR_OPEN)
+				break;
+		}
+		if (rightFact) {
+			this->_parsedNodeList.push_back(new ParsedNode((*it)->getToken(), (*it)->getValue()));
+		} else
+			this->pushError((*it)->getNumCol(), (*it)->getNumLine(), "Unexpected token");
+	} else
+		this->pushError((*it)->getNumCol(), (*it)->getNumLine(), "Unexpected token");
+	it++;
 }
 
-void Parser::parseInstrAdd(void) {
-	this->_parsedNodeList.push_back(new ParsedNode(NB_TK, NB_TK, ""));
-	this->_currentIt++;
-	this->endLine();
+void Parser::tkNot(void) {
+	std::list<Node*>::iterator & it = this->_currentIt;
+	std::list<Node*>::iterator tmpIt = std::next(it, 1);
+
+	if (tmpIt != this->_nodeList.end()) {
+		if ((*tmpIt)->getToken() == TK_FACT) {
+			this->_parsedNodeList.push_back(new ParsedNode((*it)->getToken(), (*it)->getValue()));
+		} else
+			this->pushError((*it)->getNumCol(), (*it)->getNumLine(), "Unexpected token");
+	} else
+		this->pushError((*it)->getNumCol(), (*it)->getNumLine(), "Character expected");
+	it++;
 }
 
-void Parser::parseInstrSub(void) {
-	this->_parsedNodeList.push_back(new ParsedNode(NB_TK, NB_TK, ""));
-	this->_currentIt++;
-	this->endLine();
+void Parser::tkOr(void) {
+
 }
 
-void Parser::parseInstrMul(void) {
-	this->_parsedNodeList.push_back(new ParsedNode(NB_TK, NB_TK, ""));
-	this->_currentIt++;
-	this->endLine();
+void Parser::tkXor(void) {
+
 }
 
-void Parser::parseInstrDiv(void) {
-	this->_parsedNodeList.push_back(new ParsedNode(NB_TK, NB_TK, ""));
-	this->_currentIt++;
-	this->endLine();
+void Parser::tkIfAndOnlyIf(void) {
+
 }
 
-void Parser::parseInstrMod(void) {
-	this->_parsedNodeList.push_back(new ParsedNode(NB_TK, NB_TK, ""));
-	this->_currentIt++;
-	this->endLine();
+void Parser::tkParOpen(void) {
+
 }
 
-void Parser::parseInstrPrint(void) {
-	this->_parsedNodeList.push_back(new ParsedNode(NB_TK, NB_TK, ""));
-	this->_currentIt++;
-	this->endLine();
-}
+void Parser::tkParClose(void) {
 
-void Parser::parseInstrExit(void) {
-	this->_parsedNodeList.push_back(new ParsedNode(NB_TK, NB_TK, ""));
-	this->_currentIt++;
-	this->endLine();
 }
 
 std::list<Error*> Parser::getErrorList(void) const {

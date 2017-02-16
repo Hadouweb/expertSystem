@@ -32,33 +32,35 @@ private:
 	bool isValue(Node *n);
 	bool endLine(void);
 	void pushError(unsigned int col, unsigned int line, std::string type);
+	bool authorizedOperator(e_tk token);
+	void skipSpace(void);
 
-	void parseInstrPush(void);
-	void parseInstrPop(void);
-	void parseInstrDump(void);
-	void parseInstrAssert(void);
-	void parseInstrAdd(void);
-	void parseInstrSub(void);
-	void parseInstrMul(void);
-	void parseInstrDiv(void);
-	void parseInstrMod(void);
-	void parseInstrPrint(void);
-	void parseInstrExit(void);
+	void tkFact(void);
+	void tkInitFact(void);
+	void tkQuery(void);
+	void tkImplie(void);
+	void tkPlus(void);
+	void tkNot(void);
+	void tkOr(void);
+	void tkXor(void);
+	void tkIfAndOnlyIf(void);
+	void tkParOpen(void);
+	void tkParClose(void);
 
 	typedef std::map<e_tk, void (Parser::*)(void) > instrMapType;
 
 	instrMapType _instrCheckerMap = {
-    	{NB_TK, 	&Parser::parseInstrPush},
-		{NB_TK, 		&Parser::parseInstrPop},
-		{NB_TK, 	&Parser::parseInstrDump},
-		{NB_TK, 	&Parser::parseInstrAssert},
-		{NB_TK, 		&Parser::parseInstrAdd},
-		{NB_TK, 		&Parser::parseInstrSub},
-		{NB_TK, 		&Parser::parseInstrMul},
-		{NB_TK, 		&Parser::parseInstrDiv},
-		{NB_TK, 		&Parser::parseInstrMod},
-		{NB_TK, 	&Parser::parseInstrPrint},
-		{NB_TK, 	&Parser::parseInstrExit},
+    	{TK_FACT, 			&Parser::tkFact},
+		{TK_INIT_FACT, 		&Parser::tkInitFact},
+		{TK_QUERY, 			&Parser::tkQuery},
+		{TK_IMPLIE, 		&Parser::tkImplie},
+		{TK_PLUS, 			&Parser::tkPlus},
+		{TK_NOT, 			&Parser::tkNot},
+		{TK_OR, 			&Parser::tkOr},
+		{TK_XOR, 			&Parser::tkXor},
+		{TK_IF_AND_ONLY_IF, &Parser::tkIfAndOnlyIf},
+		{TK_PAR_OPEN, 		&Parser::tkParOpen},
+		{TK_PAR_CLOSE, 		&Parser::tkParClose},
     };
 
 	class SynthaxException : public std::exception {

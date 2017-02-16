@@ -5,18 +5,16 @@
 
 class ParsedNode {
 public:
-	ParsedNode(e_tk pTkInstr, e_tk pTkValue, std::string val);
+	ParsedNode(e_tk pTkInstr, std::string val);
     ~ParsedNode(void);
 
-    e_tk getTkInstr(void) const;
-    e_tk getTkValue(void) const;
+    e_tk getToken(void) const;
     std::string getValue(void) const;
 
 private:
 	ParsedNode(ParsedNode const & src);
 	ParsedNode & operator=(ParsedNode const & rhs);
-	const e_tk _tkInstr;
-	const e_tk _tkValue;
+	const e_tk _tk;
 	std::string _value;
 	ParsedNode(void);
 };
