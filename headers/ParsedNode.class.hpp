@@ -10,6 +10,7 @@ public:
 
     e_tk getToken(void) const;
     std::string getValue(void) const;
+    void addValue(std::string val);
 
 private:
 	ParsedNode(ParsedNode const & src);

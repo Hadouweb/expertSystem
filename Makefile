@@ -16,6 +16,8 @@ SRC =   $(SRC_PATH)/main.cpp\
         $(SRC_PATH)/FactBase.class.cpp\
         $(SRC_PATH)/Rule.class.cpp\
         $(SRC_PATH)/RuleBase.class.cpp\
+        $(SRC_PATH)/Motor.class.cpp\
+        $(SRC_PATH)/Operand.class.cpp\
 
 OBJ = $(SRC:%.cpp=%.o)
 

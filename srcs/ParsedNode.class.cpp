@@ -31,8 +31,12 @@ std::string ParsedNode::getValue(void) const {
 	return this->_value;
 }
 
+void ParsedNode::addValue(std::string val) {
+	this->_value += val;
+}
+
 std::ostream &operator<<(std::ostream &os, ParsedNode &pN) {
 	os << Node::convertEnumTk(pN.getToken()) << " value: |";
-	os << pN.getValue() << "|" << std::endl;
+	os << pN.getValue() << "|";
 	return os;
 }

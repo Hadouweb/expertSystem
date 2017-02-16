@@ -25,12 +25,11 @@ public:
 	std::list<Error*> getErrorList(void) const;
 	std::list<ParsedNode*> getParsedNodeList(void) const;
 	void printError(void);
+	void reduceList(void);
 
 private:
 	Parser(Parser const & src);
 	Parser & operator=(Parser const & rhs);
-	bool isValue(Node *n);
-	bool endLine(void);
 	void pushError(unsigned int col, unsigned int line, std::string type);
 	bool authorizedOperator(e_tk token);
 	void skipSpace(void);

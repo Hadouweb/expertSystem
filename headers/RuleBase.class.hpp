@@ -2,21 +2,16 @@
 # define RULE_BASE_CLASS_HPP
 
 #include "Rule.class.hpp"
-#include "Node.class.hpp"
+#include "FactBase.class.hpp"
+#include "ParsedNode.class.hpp"
 #include <list>
 #include <iostream>
 
 
 class RuleBase {
 public:
-	static RuleBase * getInstance() {
-		if (_singleton == NULL) {
-			_singleton = new RuleBase();
-		}
-		return _singleton;
-	}
-
-	void addRule(std::list<Node*> & nodeRuleList);
+	RuleBase(std::list<ParsedNode*> parsedList);
+	void addRule(std::list<ParsedNode*> & nodeRuleList);
 
 private:
 	RuleBase(void);
@@ -24,7 +19,6 @@ private:
 	RuleBase(RuleBase const & src);
 	RuleBase & operator=(RuleBase const & rhs);
 
-	static RuleBase *_singleton;
 	std::list<Rule> _ruleList;
 };
 

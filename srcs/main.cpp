@@ -2,6 +2,7 @@
 #include <regex>
 #include "Lexer.class.hpp"
 #include "Parser.class.hpp"
+#include "Motor.class.hpp"
 
 int		main(int ac, char **av) {
 	Lexer * l;
@@ -22,13 +23,15 @@ int		main(int ac, char **av) {
 	// DEBUG
 
 	for (std::list<Node*>::iterator it = nodeList.begin(); it != nodeList.end(); ++it) {
-		//std::cout << *(*it);
+		//std::cout << *(*it) << std::endl;;
 	}
 	//std::cout << "Size List : " << nodeList.size() << std::endl;
 
 	std::cout << std::endl;
 
 	Parser p(nodeList);
+
+	p.reduceList();
 
 	std::list<Error*> errorListParser = p.getErrorList();
 	std::list<ParsedNode*> parsedListParser = p.getParsedNodeList();
@@ -41,8 +44,10 @@ int		main(int ac, char **av) {
 	// DEBUG
 
 	for (std::list<ParsedNode*>::iterator it = parsedListParser.begin(); it != parsedListParser.end(); ++it) {
-		std::cout << *(*it);
+		std::cout << *(*it) << std::endl;
 	}
+
+	Motor m(parsedListParser);
 
 
 	return 0;

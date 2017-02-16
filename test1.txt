@@ -1,6 +1,6 @@
-A | B => C
+A | D + B => C
 C + A => D
 
-=ADZE
+=AD
 
 ?DB

@@ -365,7 +365,7 @@ void Parser::tkIfAndOnlyIf(void) {
 void Parser::tkParOpen(void) {
 	std::list<Node*>::iterator & it = this->_currentIt;
 	std::list<Node*>::iterator tmpIt = it;
-
+	unsigned int count = 0;
 	bool rightFact = false;
 	bool rightParClose = false;
 
@@ -373,8 +373,12 @@ void Parser::tkParOpen(void) {
 		if ((*tmpIt)->getToken() == TK_FACT) {
 			rightFact = true;
 		}
+		if ((*tmpIt)->getToken() == TK_PAR_OPEN)
+			count++;
 		if ((*tmpIt)->getToken() == TK_PAR_CLOSE) {
-			rightParClose = true;
+			count--;
+			if (count == 0)
+				rightParClose = true;
 		}
 		if ((*tmpIt)->getToken() == TK_END_LINE ||
 			(*tmpIt)->getToken() == TK_IMPLIE ||
@@ -393,7 +397,7 @@ void Parser::tkParOpen(void) {
 void Parser::tkParClose(void) {
 	std::list<Node*>::iterator & it = this->_currentIt;
 	std::list<Node*>::iterator tmpIt = it;
-
+	unsigned int count = 1;
 	bool rightFact = false;
 	bool rightParOpen = false;
 
@@ -402,8 +406,12 @@ void Parser::tkParClose(void) {
 		if ((*tmpIt)->getToken() == TK_FACT) {
 			rightFact = true;
 		}
+		if ((*tmpIt)->getToken() == TK_PAR_CLOSE)
+			count++;
 		if ((*tmpIt)->getToken() == TK_PAR_OPEN) {
-			rightParOpen = true;
+			count--;
+			if (count == 0)
+				rightParOpen = true;
 		}
 		if ((*tmpIt)->getToken() == TK_END_LINE ||
 			(*tmpIt)->getToken() == TK_IMPLIE ||
@@ -416,6 +424,20 @@ void Parser::tkParClose(void) {
 	} else
 		this->pushError((*it)->getNumCol(), (*it)->getNumLine(), "Character expected");
 	it++;
+}
+
+void Parser::reduceList(void) {
+	e_tk prevToken = NB_TK;
+	std::list<ParsedNode *>::iterator prevIt;
+
+	for (std::list<ParsedNode *>::iterator it = this->_parsedNodeList.begin(); it != this->_parsedNodeList.end(); ++it) {
+		if ((*it)->getToken() == prevToken) {
+			(*prevIt)->addValue((*it)->getValue());
+			this->_parsedNodeList.erase(it);
+		} else
+			prevIt = it;
+		prevToken = (*it)->getToken();
+	}
 }
 
 std::list<Error*> Parser::getErrorList(void) const {
@@ -439,14 +461,6 @@ void Parser::printError(void) {
 
 void Parser::pushError(unsigned int col, unsigned int line, std::string type) {
 	this->_errorList.push_back(new Error(col, line, type));
-}
-
-bool Parser::isValue(Node *n) {
-	return (n->getToken() == NB_TK ||
-			n->getToken() == NB_TK ||
-			n->getToken() == NB_TK ||
-			n->getToken() == NB_TK ||
-			n->getToken() == NB_TK);
 }
 
 Parser::SynthaxException::SynthaxException(void) { }
