@@ -72,6 +72,6 @@ std::string Node::getValue() const {
 }
 
 std::ostream &operator<<(std::ostream &os, Node &n) {
-	os << Node::convertEnumTk(n.getToken()) << " |" << n.getValue() << "| col : " << n.getNumCol() << " line : " << n.getNumLine() << std::endl;
+	os << Node::convertEnumTk(n.getToken()) << " |" << n.getValue() << "| col : " << n.getNumCol() << " line : " << n.getNumLine();
 	return os;
 }

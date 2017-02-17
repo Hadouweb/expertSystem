@@ -173,6 +173,8 @@ e_tk Lexer::findCaracter(char c, unsigned int numCol, unsigned int numLine, bool
 		this->updateStatus();
 	} else {
 		e_tk token = this->pushToken(numLine, numCol);
+		if (token == TK_COMMENT)
+			return TK_COMMENT;
 		if (token == NB_TK) {
 			if (reCheck == false)
 				this->findCaracter(c, numCol, numLine, true); 	// Last check token exemple <=>B

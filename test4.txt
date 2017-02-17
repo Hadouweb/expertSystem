@@ -1,0 +1,11 @@
+B + C   => A
+D | E   => B
+B       => C
+
+?A
+
+=       # A->false
+
+#=D     # A
+#=E     # A
+#=DE    # A

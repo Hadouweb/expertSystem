@@ -1,9 +1,11 @@
 #ifndef MOTOR_CLASS_HPP
 # define MOTOR_CLASS_HPP
 
+#include <list>
 #include "ParsedNode.class.hpp"
 #include "FactBase.class.hpp"
 #include "RuleBase.class.hpp"
+#include "Graph.class.hpp"
 
 class Motor {
 public:

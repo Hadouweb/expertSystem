@@ -47,3 +47,7 @@ std::string Operand::toString(void) const {
 			return "???";
 	}
 }
+
+std::string Operand::getName(void) const {
+	return this->toString();
+}

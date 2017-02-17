@@ -117,9 +117,9 @@ void Parser::tkFact(void) {
 		if (leftFact || rightFact) {
 			this->_parsedNodeList.push_back(new ParsedNode((*it)->getToken(), (*it)->getValue()));
 		} else
-			this->pushError((*it)->getNumCol(), (*it)->getNumLine(), "Unexpected token");
+			this->pushError((*it)->getNumCol(), (*it)->getNumLine(), "Unexpected token from Fact");
 	} else
-		this->pushError(col, line, "Character expected");
+		this->pushError(col, line, "Character expected from Fact");
 	it++;
 }
 
@@ -136,11 +136,11 @@ void Parser::tkInitFact(void) {
 				}
 			}
 			else
-				this->pushError((*it)->getNumCol(), (*it)->getNumLine(), "Unexpected token");
+				this->pushError((*it)->getNumCol(), (*it)->getNumLine(), "Unexpected token from InitFact");
 		} else
-			this->pushError((*it)->getNumCol(), (*it)->getNumLine(), "Unexpected token");
+			this->pushError((*it)->getNumCol(), (*it)->getNumLine(), "Unexpected token from InitFact");
 	} else
-		this->pushError((*it)->getNumCol(), (*it)->getNumLine(), "Character expected");
+		this->pushError((*it)->getNumCol(), (*it)->getNumLine(), "Character expected from InitFact");
 }
 
 void Parser::tkQuery(void) {
@@ -156,11 +156,11 @@ void Parser::tkQuery(void) {
 				}
 			}
 			else
-				this->pushError((*it)->getNumCol(), (*it)->getNumLine(), "Unexpected token");
+				this->pushError((*it)->getNumCol(), (*it)->getNumLine(), "Unexpected token from Query");
 		} else
-			this->pushError((*it)->getNumCol(), (*it)->getNumLine(), "Unexpected token");
+			this->pushError((*it)->getNumCol(), (*it)->getNumLine(), "Unexpected token from Query");
 	} else
-		this->pushError((*it)->getNumCol(), (*it)->getNumLine(), "Character expected");
+		this->pushError((*it)->getNumCol(), (*it)->getNumLine(), "Character expected from Query");
 }
 
 void Parser::tkImplie(void) {
@@ -194,9 +194,9 @@ void Parser::tkImplie(void) {
 		if (rightFact) {
 			this->_parsedNodeList.push_back(new ParsedNode((*it)->getToken(), (*it)->getValue()));
 		} else
-			this->pushError((*it)->getNumCol(), (*it)->getNumLine(), "Unexpected token");
+			this->pushError((*it)->getNumCol(), (*it)->getNumLine(), "Unexpected token from Implie");
 	} else
-		this->pushError((*it)->getNumCol(), (*it)->getNumLine(), "Unexpected token");
+		this->pushError((*it)->getNumCol(), (*it)->getNumLine(), "Unexpected token from Implie");
 	it++;
 }
 
@@ -231,9 +231,9 @@ void Parser::tkPlus(void) {
 		if (rightFact) {
 			this->_parsedNodeList.push_back(new ParsedNode((*it)->getToken(), (*it)->getValue()));
 		} else
-			this->pushError((*it)->getNumCol(), (*it)->getNumLine(), "Unexpected token");
+			this->pushError((*it)->getNumCol(), (*it)->getNumLine(), "Unexpected token from Plus");
 	} else
-		this->pushError((*it)->getNumCol(), (*it)->getNumLine(), "Unexpected token");
+		this->pushError((*it)->getNumCol(), (*it)->getNumLine(), "Unexpected token from Plus");
 	it++;
 }
 
@@ -245,9 +245,9 @@ void Parser::tkNot(void) {
 		if ((*tmpIt)->getToken() == TK_FACT) {
 			this->_parsedNodeList.push_back(new ParsedNode((*it)->getToken(), (*it)->getValue()));
 		} else
-			this->pushError((*it)->getNumCol(), (*it)->getNumLine(), "Unexpected token");
+			this->pushError((*it)->getNumCol(), (*it)->getNumLine(), "Unexpected token from Not");
 	} else
-		this->pushError((*it)->getNumCol(), (*it)->getNumLine(), "Character expected");
+		this->pushError((*it)->getNumCol(), (*it)->getNumLine(), "Character expected from Not");
 	it++;
 }
 
@@ -282,9 +282,9 @@ void Parser::tkOr(void) {
 		if (rightFact) {
 			this->_parsedNodeList.push_back(new ParsedNode((*it)->getToken(), (*it)->getValue()));
 		} else
-			this->pushError((*it)->getNumCol(), (*it)->getNumLine(), "Unexpected token");
+			this->pushError((*it)->getNumCol(), (*it)->getNumLine(), "Unexpected token from Or");
 	} else
-		this->pushError((*it)->getNumCol(), (*it)->getNumLine(), "Unexpected token");
+		this->pushError((*it)->getNumCol(), (*it)->getNumLine(), "Unexpected token from Or");
 	it++;
 }
 
@@ -319,9 +319,9 @@ void Parser::tkXor(void) {
 		if (rightFact) {
 			this->_parsedNodeList.push_back(new ParsedNode((*it)->getToken(), (*it)->getValue()));
 		} else
-			this->pushError((*it)->getNumCol(), (*it)->getNumLine(), "Unexpected token");
+			this->pushError((*it)->getNumCol(), (*it)->getNumLine(), "Unexpected token from Xor");
 	} else
-		this->pushError((*it)->getNumCol(), (*it)->getNumLine(), "Unexpected token");
+		this->pushError((*it)->getNumCol(), (*it)->getNumLine(), "Unexpected token from Xor");
 	it++;
 }
 
@@ -356,9 +356,9 @@ void Parser::tkIfAndOnlyIf(void) {
 		if (rightFact) {
 			this->_parsedNodeList.push_back(new ParsedNode((*it)->getToken(), (*it)->getValue()));
 		} else
-			this->pushError((*it)->getNumCol(), (*it)->getNumLine(), "Unexpected token");
+			this->pushError((*it)->getNumCol(), (*it)->getNumLine(), "Unexpected token from IfAndOnlyIf");
 	} else
-		this->pushError((*it)->getNumCol(), (*it)->getNumLine(), "Unexpected token");
+		this->pushError((*it)->getNumCol(), (*it)->getNumLine(), "Unexpected token from IfAndOnlyIf");
 	it++;
 }
 
@@ -390,7 +390,7 @@ void Parser::tkParOpen(void) {
 	if (rightFact && rightParClose) {
 		this->_parsedNodeList.push_back(new ParsedNode((*it)->getToken(), (*it)->getValue()));
 	} else
-		this->pushError((*it)->getNumCol(), (*it)->getNumLine(), "Character expected");
+		this->pushError((*it)->getNumCol(), (*it)->getNumLine(), "Character expected from ParOpen");
 	it++;
 }
 
@@ -422,7 +422,7 @@ void Parser::tkParClose(void) {
 	if (rightFact && rightParOpen) {
 		this->_parsedNodeList.push_back(new ParsedNode((*it)->getToken(), (*it)->getValue()));
 	} else
-		this->pushError((*it)->getNumCol(), (*it)->getNumLine(), "Character expected");
+		this->pushError((*it)->getNumCol(), (*it)->getNumLine(), "Character expected from ParClose");
 	it++;
 }
 

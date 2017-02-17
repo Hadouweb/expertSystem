@@ -94,7 +94,7 @@ Rule *RuleBase::getRuleByConclusion(Fact *f) {
 		if ((*itR)->used == false) {
 			std::list<IObject*> cList = (*itR)->getConclusionList();
 			for (std::list<IObject *>::iterator itC = cList.begin(); itC != cList.end(); ++itC) {
-				if ((*itC)->getToken() == f->getToken())
+				if ((*itC)->getName() == f->getName())
 					return *itR;
 			}
 		}

@@ -1,0 +1,14 @@
+B       => A
+D + E   => B
+G + M   => F
+I + J   => G
+G       => M
+L + M   => K
+O + P   => L + N
+N       => M
+
+?A  #FKP
+
+=DEIJOP     #AFKP
+
+#=DEIJP     #AFP

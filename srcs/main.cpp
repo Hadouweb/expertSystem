@@ -22,7 +22,7 @@ int		main(int ac, char **av) {
 	// DEBUG
 
 	for (std::list<Node*>::iterator it = nodeList.begin(); it != nodeList.end(); ++it) {
-		//std::cout << *(*it) << std::endl;;
+		//std::cout << *(*it) << std::endl;
 	}
 	//std::cout << "Size List : " << nodeList.size() << std::endl;
 

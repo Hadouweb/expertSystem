@@ -1,4 +1,3 @@
-#include <list>
 #include "Motor.class.hpp"
 
 Motor::Motor(std::list<ParsedNode *> parsedList)
@@ -64,7 +63,14 @@ void Motor::searchQuery(void) {
 }
 
 void Motor::makeGraph(Fact * q) {
+	std::cout << "*********************************************" << std::endl;
 	std::cout << "Make Graph for query: (" << q << ")" << std::endl;
 	Rule * r = this->_rDB->getRuleByConclusion(q);
 	std::cout << r << std::endl;
+
+	std::list<IObject*> premise = r->getPremiseList();
+	for (std::list<IObject*>::iterator it = premise.begin(); it != premise.end(); it++) {
+		Rule * r = this->_rDB->getRuleByConclusion(static_cast<Fact*>(*it));
+		std::cout << r << std::endl;
+	}
 }

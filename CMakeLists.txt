@@ -17,6 +17,7 @@ set(SOURCE_FILES
     headers/Motor.class.hpp
     headers/IObject.hpp
     headers/Operand.class.hpp
+    headers/Graph.class.hpp
     srcs/Lexer.class.cpp
     srcs/main.cpp
     srcs/Node.class.cpp

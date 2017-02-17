@@ -6,6 +6,7 @@
 class IObject {
 public:
 	virtual e_tk getToken(void) const = 0;
+	virtual std::string getName(void) const = 0;
 	virtual std::string toString(void) const = 0;
 
 	virtual ~IObject(void) { };
