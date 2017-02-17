@@ -10,6 +10,7 @@ public:
     virtual ~Operand(void);
 
 	virtual e_tk getToken(void) const;
+	std::string toString(void) const;
 
 private:
 	Operand(void);

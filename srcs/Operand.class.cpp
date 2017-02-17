@@ -1,4 +1,3 @@
-#include <Node.class.hpp>
 #include "Operand.class.hpp"
 
 Operand::Operand(e_tk token)
@@ -6,7 +5,8 @@ Operand::Operand(e_tk token)
 
 }
 
-Operand::Operand(void) {
+Operand::Operand(void)
+	: _token(NB_TK) {
 
 }
 
@@ -14,7 +14,8 @@ Operand::~Operand(void) {
 
 }
 
-Operand::Operand(Operand const &src) {
+Operand::Operand(Operand const &src)
+	: _token(src._token) {
 	*this = src;
 }
 
@@ -25,5 +26,24 @@ Operand &Operand::operator=(Operand const &rhs) {
 }
 
 e_tk Operand::getToken(void) const {
-	return this->getToken();
+	return this->_token;
+}
+
+std::string Operand::toString(void) const {
+	switch (this->_token) {
+		case TK_PLUS:
+			return "+";
+		case TK_OR:
+			return "|";
+		case TK_XOR:
+			return "^";
+		case TK_NOT:
+			return "!";
+		case TK_IMPLIE:
+			return "=>";
+		case TK_IF_AND_ONLY_IF:
+			return "<=>";
+		default:
+			return "???";
+	}
 }

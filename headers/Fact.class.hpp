@@ -2,6 +2,7 @@
 # define FACT_CLASS_HPP
 
 #include <iostream>
+#include <sstream>
 #include "IObject.hpp"
 #include "Node.class.hpp"
 
@@ -14,6 +15,7 @@ public:
 	bool getValue(void) const;
 	virtual e_tk getToken(void) const;
 	void setValue(bool val);
+	std::string toString(void) const;
 
 private:
 	Fact(void);

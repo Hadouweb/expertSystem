@@ -49,9 +49,23 @@ Fact *FactBase::addFact(std::string name, bool value) {
 	return f;
 }
 
+Fact *FactBase::getFactByName(std::string name) {
+	std::map<std::string, Fact*>::iterator it = this->_factMap.find(name);
+	Fact * f;
+	if (it == this->_factMap.end()) {
+		f = new Fact(TK_FACT, name, false);
+		this->_factMap.insert(std::pair<std::string, Fact*>(name, f));
+	} else {
+		f = (*it).second;
+	}
+	return f;
+}
+
 void FactBase::printFactBase(void) const {
 	std::cout << "FactBase:" << std::endl;
 	for (std::map<std::string, Fact*>::const_iterator it = this->_factMap.begin(); it != this->_factMap.end(); ++it) {
-		std::cout << (*it).second << std::endl;
+		std::cout << "\t" << (*it).second << std::endl;
 	}
 }
+
+FactBase * FactBase::_singleton = NULL;

@@ -14,6 +14,7 @@ public:
 
 	void initFact(std::list<ParsedNode*> parsedList);
 	Fact * addFact(std::string name, bool value);
+	Fact * getFactByName(std::string name);
 	void printFactBase(void) const;
 
 private:
@@ -24,7 +25,5 @@ private:
 	std::map<std::string, Fact*> _factMap;
 	static FactBase * _singleton;
 };
-
-FactBase * FactBase::_singleton = NULL;
 
 #endif

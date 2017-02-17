@@ -10,12 +10,19 @@ public:
 	Motor(std::list<ParsedNode*> parsedList);
     ~Motor(void);
 
+	void initQueryFact(void);
+	void printQueryFact(void);
+
+	void searchQuery(void);
+	void makeGraph(Fact * q);
+
 private:
 	Motor(void);
 	Motor(Motor const & src);
 	Motor & operator=(Motor const & rhs);
 
 	std::list<ParsedNode*> _parsedList;
+	std::list<Fact*> _queryFactList;
 	FactBase * _fDB;
 	RuleBase * _rDB;
 };

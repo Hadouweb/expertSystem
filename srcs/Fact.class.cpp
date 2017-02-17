@@ -42,7 +42,13 @@ e_tk Fact::getToken(void) const {
 	return this->_token;
 }
 
+std::string Fact::toString(void) const {
+	std::stringstream ss;
+	ss << "Name: " << this->getName() << " | Value " << std::boolalpha << this->getValue();
+	return ss.str();
+}
+
 std::ostream &operator<<(std::ostream &os, Fact *f) {
-	os << "\tName: " << f->getName() << " | Value " << std::boolalpha << f->getValue();
+	os << "Name: " << f->getName() << " | Value " << std::boolalpha << f->getValue();
 	return os;
 }

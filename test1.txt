@@ -1,6 +1,8 @@
-A | D + B => C
-C + A => D
+C + A       => E
+E | B       => C
+F | B + A   => A
+C + E       => D
 
-=AD
+=B
 
-?DB
+?D
