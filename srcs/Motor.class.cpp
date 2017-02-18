@@ -70,7 +70,9 @@ void Motor::makeGraph(Fact * q) {
 
 	std::list<IObject*> premise = r->getPremiseList();
 	for (std::list<IObject*>::iterator it = premise.begin(); it != premise.end(); it++) {
-		Rule * r = this->_rDB->getRuleByConclusion(static_cast<Fact*>(*it));
-		std::cout << r << std::endl;
+		if ((*it)->getToken() == TK_FACT) {
+			Rule *r = this->_rDB->getRuleByConclusion(static_cast<Fact *>(*it));
+			std::cout << r << std::endl;
+		}
 	}
 }

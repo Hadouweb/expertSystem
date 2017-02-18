@@ -14,7 +14,7 @@ public:
 	static RuleBase * getInstance(void);
 
 	void initRule(std::list<ParsedNode*> parsedList);
-	void addRule(std::list<ParsedNode*> & nodeRuleList);
+	void addRule( std::list<ParsedNode*> & nodeRuleList);
 	void printAllRule(void) const;
 	Rule * getRuleByConclusion(Fact * f);
 
