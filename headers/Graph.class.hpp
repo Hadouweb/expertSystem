@@ -1,27 +1,26 @@
 #ifndef GRAPH_CLASS_HPP
 # define GRAPH_CLASS_HPP
 
-template <typename T>
+#include "IObject.hpp"
+#include <iostream>
+#include <map>
+
 class Graph {
 public:
-    Graph(void) { };
-    virtual ~Graph(void) { };
+	Graph(void);
+	virtual ~Graph(void);
 
-    T getData(void) const {
-    	return this->_data;
-    };
+	void addLink(IObject * a, IObject * b);
+	void printAllNode(void) const;
+	std::map<int, IObject*> getObjectMap(void) const;
 
 private:
-    Graph(Graph const & src) {
-    	*this = src;
-    };
-    Graph & operator=(Graph const & rhs) {
-    	if (this != &rhs) {
-		}
-		return *this;
-    };
+	Graph(Graph const & src);
+	Graph & operator=(Graph const & rhs);
 
-    T _data;
+	typedef std::map<int, IObject*> defSet;
+	defSet _dataSet;
 };
+
 
 #endif

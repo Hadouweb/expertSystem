@@ -5,7 +5,7 @@ Motor::Motor(std::list<ParsedNode *> parsedList)
 
 	this->_rDB = RuleBase::getInstance();
 	this->_rDB->initRule(this->_parsedList);
-	//this->_rDB->printAllRule();
+	this->_rDB->printAllRule();
 
 	this->_fDB = FactBase::getInstance();
 	this->_fDB->initFact(parsedList);
@@ -19,7 +19,7 @@ Motor::Motor(std::list<ParsedNode *> parsedList)
 	}
 
 	std::cout << "*********************************************" << std::endl;
-	this->searchQuery();
+	//this->searchQuery();
 }
 
 Motor::~Motor(void) { }

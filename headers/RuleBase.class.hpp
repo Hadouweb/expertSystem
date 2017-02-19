@@ -4,7 +4,7 @@
 #include "Rule.class.hpp"
 #include "FactBase.class.hpp"
 #include "ParsedNode.class.hpp"
-#include "Operand.class.hpp"
+#include "Operator.class.hpp"
 #include <list>
 #include <iostream>
 
@@ -17,15 +17,18 @@ public:
 	void addRule( std::list<ParsedNode*> & nodeRuleList);
 	void printAllRule(void) const;
 	Rule * getRuleByConclusion(Fact * f);
+	std::list<ParsedNode *>::iterator makeNPI(std::list<ParsedNode *>::iterator & it,
+		std::list<ParsedNode *> & nodeRuleList,
+		std::list<IObject *> & objList);
 
 private:
 	RuleBase(void);
 	~RuleBase(void);
 	RuleBase(RuleBase const & src);
 	RuleBase & operator=(RuleBase const & rhs);
-	Operand * addOperand(e_tk token);
+	Operator * addOperator(e_tk token);
 
-	std::map<e_tk, Operand *> _operandMap;
+	std::map<e_tk, Operator *> _operandMap;
 	std::list<Rule*> _ruleList;
 	static RuleBase * _singleton;
 };

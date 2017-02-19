@@ -1,3 +1,4 @@
+#include <Operator.class.hpp>
 #include "Rule.class.hpp"
 
 Rule::Rule(std::list<IObject *> premiseList, IObject *linkOperand,
@@ -6,7 +7,6 @@ Rule::Rule(std::list<IObject *> premiseList, IObject *linkOperand,
 			_linkOperand(linkOperand),
 			_conclusionList(conclusionList) {
 	this->used = false;
-	this->makeNPI();
 }
 
 Rule::Rule(void) {
@@ -25,12 +25,6 @@ Rule &Rule::operator=(Rule const &rhs) {
 	if (this != &rhs) {
 	}
 	return *this;
-}
-
-void Rule::makeNPI(void) {
-	for (std::list<IObject*>::iterator it = this->_premiseList.begin(); it != this->_premiseList.end(); ++it) {
-		std::cout << Node::convertEnumTk((*it)->getToken()) << std::endl;
-	}
 }
 
 std::list<IObject *> Rule::getPremiseList(void) const {

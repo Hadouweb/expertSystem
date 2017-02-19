@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <sstream>
+#include <list>
 #include "IObject.hpp"
 #include "Node.class.hpp"
 
@@ -16,12 +17,15 @@ public:
 	virtual e_tk getToken(void) const;
 	void setValue(bool val);
 	std::string toString(void) const;
+	virtual void addChild(IObject *c);
+	virtual std::list<IObject *> getChild(void) const;
 
 private:
 	Fact(void);
 	Fact(Fact const & src);
 	Fact & operator=(Fact const & rhs);
 
+	std::list<IObject*> _childList;
 	const e_tk _token;
 	const std::string _name;
 	bool _value;

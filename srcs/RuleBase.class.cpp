@@ -24,7 +24,7 @@ void RuleBase::initRule(std::list<ParsedNode *> parsedList) {
 
 	if (it != parsedList.end() && (*it)->getToken() == TK_END_LINE)
 		it++;
-	while (it != parsedList.end()) {
+	while (it != parsedList.end() && (*it)->getToken() != TK_INIT_FACT) {
 		if ((*it)->getToken() == TK_END_LINE) {
 			this->addRule(ruleList);
 			ruleList.clear();
@@ -34,57 +34,95 @@ void RuleBase::initRule(std::list<ParsedNode *> parsedList) {
 	}
 }
 
-Operand *RuleBase::addOperand(e_tk token) {
-	std::map<e_tk, Operand*>::iterator it = this->_operandMap.find(token);
-	Operand *op;
+Operator *RuleBase::addOperator(e_tk token) {
+	std::map<e_tk, Operator*>::iterator it = this->_operandMap.find(token);
+	Operator *op;
 	if (it == this->_operandMap.end()) {
-		op = new Operand(token);
-		this->_operandMap.insert(std::pair<e_tk, Operand*>(token, op));
+		op = new Operator(token);
+		this->_operandMap.insert(std::pair<e_tk, Operator*>(token, op));
 	} else
 		op = (*it).second;
 	return op;
 }
 
+std::list<ParsedNode *>::iterator RuleBase::makeNPI(
+	std::list<ParsedNode *>::iterator & it,
+	std::list<ParsedNode *> & nodeRuleList,
+	std::list<IObject *> & objList)
+{
+	std::list<IObject *> stack;
+
+	while (it != nodeRuleList.end()) {
+		e_tk token = (*it)->getToken();
+		if (token == TK_FACT) {
+			Fact * f = FactBase::getInstance()->addFact((*it)->getValue(), false);
+			objList.push_back(f);
+		} else {
+			Operator *op = this->addOperator(token);
+			if (token == TK_PAR_OPEN)
+				stack.push_front(op);
+			else if (Operator::isOperator(token)) {
+				if (stack.empty())
+					stack.push_front(op);
+				else if (stack.front()->getToken() == TK_PAR_OPEN)
+					stack.push_front(op);
+				else if (token < stack.front()->getToken())
+					stack.push_front(op);
+				else {
+					objList.push_back(stack.front());
+					stack.pop_front();
+					stack.push_front(op);
+				}
+			}
+			else if (token == TK_PAR_CLOSE) {
+				while (!stack.empty()) {
+					IObject * op = stack.front();
+					if (op->getToken() == TK_PAR_OPEN)
+						break;
+					objList.push_back(op);
+					stack.pop_front();
+				}
+			}
+		}
+		if (token == TK_IMPLIE || token == TK_IF_AND_ONLY_IF)
+			break ;
+		it++;
+	}
+
+	while (!stack.empty()) {
+		IObject *op = stack.front();
+		if (Operator::isOperator(op->getToken()))
+			objList.push_back(op);
+		stack.pop_front();
+	}
+
+	return it;
+}
+
+
 void RuleBase::addRule(std::list<ParsedNode *> & nodeRuleList) {
 	std::list<ParsedNode*>::iterator it = nodeRuleList.begin();
 	std::list<IObject*> premiseList;
-	IObject *linkOperand;
+	IObject *linkOperator;
 	std::list<IObject*> conclusionList;
 
-	// Make premise list and linkOperand
-	while (it != nodeRuleList.end()) {
-		e_tk token = (*it)->getToken();
-		if (token == TK_FACT) {
-			Fact * f = FactBase::getInstance()->addFact((*it)->getValue(), false);
-			premiseList.push_back(f);
-		}
-		else if (token == TK_PLUS || token == TK_OR || token == TK_XOR || token == TK_NOT) {
-			Operand *op = this->addOperand(token);
-			premiseList.push_back(op);
-		}
-		else if (token == TK_IMPLIE || token == TK_IF_AND_ONLY_IF) {
-			linkOperand = this->addOperand(token);
-			it++;
-			break ;
-		}
-		it++;
+	// Make premise list and linkOperator
+	it = makeNPI(it, nodeRuleList, premiseList);
+
+	for (std::list<IObject *>::iterator it = premiseList.begin(); it != premiseList.end(); ++it) {
+		std::cout << (*it)->getName() << " " << Node::convertEnumTk((*it)->getToken()) << std::endl;
 	}
 
-	// Make conclusion list
-	while (it != nodeRuleList.end()) {
-		e_tk token = (*it)->getToken();
-		if (token == TK_FACT) {
-			Fact * f = FactBase::getInstance()->addFact((*it)->getValue(), false);
-			conclusionList.push_back(f);
-		}
-		else if (token == TK_PLUS || token == TK_OR || token == TK_XOR || token == TK_NOT) {
-			Operand *op = this->addOperand(token);
-			conclusionList.push_back(op);
-		}
-		it++;
-	}
+	e_tk token = (*it)->getToken();
+	std::cout << Node::convertEnumTk(token) << std::endl;
+	std::cout << std::endl;
 
-	Rule *r = new Rule(premiseList, linkOperand, conclusionList);
+	linkOperator = this->addOperator(token);
+	it++;
+
+	makeNPI(it, nodeRuleList, conclusionList);
+
+	Rule *r = new Rule(premiseList, linkOperator, conclusionList);
 	this->_ruleList.push_back(r);
 }
 

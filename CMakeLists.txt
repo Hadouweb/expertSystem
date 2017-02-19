@@ -16,7 +16,7 @@ set(SOURCE_FILES
     headers/FactBase.class.hpp
     headers/Motor.class.hpp
     headers/IObject.hpp
-    headers/Operand.class.hpp
+        headers/Operator.class.hpp
     headers/Graph.class.hpp
     srcs/Lexer.class.cpp
     srcs/main.cpp
@@ -28,7 +28,8 @@ set(SOURCE_FILES
     srcs/FactBase.class.cpp
     srcs/RuleBase.class.cpp
     srcs/Motor.class.cpp
-    srcs/Operand.class.cpp
+        srcs/Operator.class.cpp
+    srcs/Graph.class.cpp
     CMakeLists.txt
     Makefile
     test1.txt

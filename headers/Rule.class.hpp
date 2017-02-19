@@ -14,7 +14,6 @@ public:
 	std::list<IObject*> getPremiseList(void) const;
 	IObject* getLinkOperand(void) const;
 	std::list<IObject*> getConclusionList(void) const;
-	void makeNPI(void);
 
 	bool used;
 

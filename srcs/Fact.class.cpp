@@ -48,6 +48,14 @@ std::string Fact::toString(void) const {
 	return ss.str();
 }
 
+void Fact::addChild(IObject *c) {
+	this->_childList.push_back(c);
+}
+
+std::list<IObject *> Fact::getChild(void) const {
+	return this->_childList;
+}
+
 std::ostream &operator<<(std::ostream &os, Fact *f) {
 	os << "Name: " << f->getName() << " | Value " << std::boolalpha << f->getValue();
 	return os;
