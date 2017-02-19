@@ -10,7 +10,7 @@ public:
 	Graph(void);
 	virtual ~Graph(void);
 
-	void addLink(IObject * a, IObject * b);
+	void addLink(IObject * parent, IObject * child);
 	void printAllNode(void) const;
 	std::map<int, IObject*> getObjectMap(void) const;
 

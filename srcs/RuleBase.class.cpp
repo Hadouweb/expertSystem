@@ -35,13 +35,9 @@ void RuleBase::initRule(std::list<ParsedNode *> parsedList) {
 }
 
 Operator *RuleBase::addOperator(e_tk token) {
-	std::map<e_tk, Operator*>::iterator it = this->_operandMap.find(token);
-	Operator *op;
-	if (it == this->_operandMap.end()) {
-		op = new Operator(token);
-		this->_operandMap.insert(std::pair<e_tk, Operator*>(token, op));
-	} else
-		op = (*it).second;
+	Operator * op = new Operator(token);
+	this->_operatorList.push_back(op);
+	op->indexDebug = this->_operatorList.size();
 	return op;
 }
 
@@ -138,6 +134,10 @@ Rule *RuleBase::getRuleByConclusion(Fact *f) {
 		}
 	}
 	return NULL;
+}
+
+std::list<Operator *> RuleBase::getOperator(void) const {
+	return this->_operatorList;
 }
 
 RuleBase *RuleBase::getInstance(void) {

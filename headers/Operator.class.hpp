@@ -19,6 +19,8 @@ public:
 	virtual void setParent(IObject *p);
 	virtual IObject *getParent(void) const;
 
+	int indexDebug;
+
 private:
 	Operator(void);
 	Operator(Operator const & src);

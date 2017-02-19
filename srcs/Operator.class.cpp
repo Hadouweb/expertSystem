@@ -30,19 +30,20 @@ e_tk Operator::getToken(void) const {
 }
 
 std::string Operator::toString(void) const {
+	std::string indexStrDebug = std::to_string(this->indexDebug);
 	switch (this->_token) {
 		case TK_PLUS:
-			return "+";
+			return "+" + indexStrDebug;
 		case TK_OR:
-			return "|";
+			return "|" + indexStrDebug;
 		case TK_XOR:
-			return "^";
+			return "^" + indexStrDebug;
 		case TK_NOT:
-			return "!";
+			return "!" + indexStrDebug;
 		case TK_IMPLIE:
-			return "=>";
+			return "=>" + indexStrDebug;
 		case TK_IF_AND_ONLY_IF:
-			return "<=>";
+			return "<=>" + indexStrDebug;
 		default:
 			return "???";
 	}
@@ -53,7 +54,6 @@ std::string Operator::getName(void) const {
 }
 
 void Operator::addChild(IObject *c) {
-	c->setParent(this);
 	this->_childList.push_back(c);
 }
 

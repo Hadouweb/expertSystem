@@ -3,6 +3,7 @@
 Motor::Motor(std::list<ParsedNode *> parsedList)
 	: _parsedList(parsedList) {
 
+	this->g = new Graph();
 	this->_rDB = RuleBase::getInstance();
 	this->_rDB->initRule(this->_parsedList);
 
@@ -77,25 +78,86 @@ void Motor::searchQuery(void) {
 	}
 }
 
+void Motor::pushOnGraph(IObject *q, Rule *r,
+	std::list<IObject*>::reverse_iterator & it,
+	std::list<IObject*> & premiseList,
+	std::list<IObject*> & stack)
+{
+	while (it != premiseList.rend()) {
+		e_tk token = (*it)->getToken();
+		std::cout << (*it)->getName() << std::endl;
+		if (Operator::isOperator(token)) {
+			IObject *obj = *it;
+			stack.push_front(*it);
+			g->addLink(q, *it);
+			it++;
+			this->pushOnGraph(obj, r, it, premiseList, stack);
+		} else if (token == TK_FACT) {
+			IObject * io = stack.front();
+			if (io->getChild().size() < 1)
+				g->addLink(io, *it);
+			else if (io->getToken() != TK_NOT && io->getChild().size() < 2)
+				g->addLink(io, *it);
+			else {
+				stack.pop_front();
+				g->addLink(stack.front(), *it);
+			}
+			this->findRule(*it);
+			it++;
+		}
+	}
+}
+
+void Motor::findRule(IObject * q) {
+	Rule * r = NULL;
+	if (q->getToken() == TK_FACT)
+		r = this->_rDB->getRuleByConclusion(static_cast<Fact*>(q));
+	if (r != NULL) {
+		std::list<IObject*> premiseList = r->getPremiseList();
+		std::list<IObject*>::reverse_iterator it = premiseList.rbegin();
+		std::list<IObject*> stack;
+		this->pushOnGraph(q, r, it, premiseList, stack);
+	}
+}
+
 void Motor::makeGraph(Fact * q) {
 	std::cout << "*********************************************" << std::endl;
 	std::cout << "Make Graph for query: (" << q << ")" << std::endl;
-	Rule * r = this->_rDB->getRuleByConclusion(q);
-	std::cout << r << std::endl;
-	r->used = true;
-	r = this->_rDB->getRuleByConclusion(q);
-	std::cout << r << std::endl;
-	r->used = true;
-	//if (r == NULL)
-	//	return ;
+	this->findRule(q);
+	this->printAllObject(true, true);
+}
 
-
-	std::list<IObject*> premise = r->getPremiseList();
-	for (std::list<IObject*>::iterator it = premise.begin(); it != premise.end(); it++) {
-		if ((*it)->getToken() == TK_FACT) {
-			Rule *r = this->_rDB->getRuleByConclusion(static_cast<Fact *>(*it));
-			if (r != NULL)
-				std::cout << r << std::endl;
+void Motor::printAllObject(bool withParent, bool withChild) const {
+	std::cout << std::endl;
+	std::map<std::string, Fact *> factMap = this->_fDB->getAllFact();
+	std::cout << "AllFact: " << std::endl << std::endl;
+	for (std::map<std::string, Fact*>::const_iterator it = factMap.begin(); it != factMap.end(); ++it) {
+		if (withParent && (*it).second->getParent())
+			std::cout << "\t" << "Parent: " << (*it).second->getParent()->toString() << std::endl;
+		std::cout  << (*it).second << std::endl;
+		if (withChild) {
+			std::list<IObject*> child = (*it).second->getChild();
+			for (std::list<IObject *>::const_iterator itC = child.begin();
+				itC != child.end(); ++itC) {
+				std::cout << "\t" << "Child: " << (*itC)->toString() << std::endl;
+			}
 		}
+		std::cout << std::endl;
+	}
+
+	std::list<Operator *> opList = this->_rDB->getOperator();
+	std::cout << "AllOperator: " << std::endl << std::endl;
+	for (std::list<Operator *>::const_iterator it = opList.begin(); it != opList.end(); ++it) {
+		if (withParent && (*it)->getParent())
+			std::cout << "\t" << "Parent: " << (*it)->getParent()->toString() << std::endl;
+		std::cout  << (*it)->toString() << std::endl;
+		if (withChild) {
+			std::list<IObject*> child = (*it)->getChild();
+			for (std::list<IObject *>::const_iterator itC = child.begin();
+				 itC != child.end(); ++itC) {
+				std::cout << "\t" << "Child: " << (*itC)->toString() << std::endl;
+			}
+		}
+		std::cout << std::endl;
 	}
 }

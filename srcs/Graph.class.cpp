@@ -8,8 +8,9 @@ Graph::~Graph(void) {
 
 }
 
-void Graph::addLink(IObject * a, IObject * b) {
-	a->addChild(b);
+void Graph::addLink(IObject * parent, IObject * child) {
+	child->setParent(parent);
+	parent->addChild(child);
 }
 
 void Graph::printAllNode(void) const {

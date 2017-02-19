@@ -16,7 +16,8 @@ public:
 	void initFact(std::list<ParsedNode*> parsedList);
 	Fact * addFact(std::string name, uint8_t value);
 	Fact * getFactByName(std::string name);
-	void printFactBase(void) const;
+	std::map<std::string, Fact*> getAllFact(void) const;
+	void printAllFact(void) const;
 
 private:
 	FactBase(void);

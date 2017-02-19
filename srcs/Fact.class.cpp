@@ -49,7 +49,6 @@ std::string Fact::toString(void) const {
 }
 
 void Fact::addChild(IObject *c) {
-	c->setParent(this);
 	this->_childList.push_back(c);
 }
 

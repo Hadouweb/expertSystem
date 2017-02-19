@@ -18,11 +18,20 @@ public:
 	void searchQuery(void);
 	void makeGraph(Fact * q);
 
+	void pushOnGraph(IObject *f, Rule *r,
+		std::list<IObject*>::reverse_iterator & it,
+		std::list<IObject*> & premiseList,
+		std::list<IObject*> & stack);
+	void findRule(IObject * f);
+
+	void printAllObject(bool withParent, bool withChild) const;
+
 private:
 	Motor(void);
 	Motor(Motor const & src);
 	Motor & operator=(Motor const & rhs);
 
+	Graph *g;
 	std::list<ParsedNode*> _parsedList;
 	std::list<Fact*> _queryFactList;
 	FactBase * _fDB;

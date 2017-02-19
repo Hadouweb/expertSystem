@@ -71,7 +71,11 @@ Fact *FactBase::getFactByName(std::string name) {
 	return f;
 }
 
-void FactBase::printFactBase(void) const {
+std::map<std::string, Fact *> FactBase::getAllFact(void) const {
+	return this->_factMap;
+}
+
+void FactBase::printAllFact(void) const {
 	std::cout << "FactBase:" << std::endl;
 	for (std::map<std::string, Fact*>::const_iterator it = this->_factMap.begin(); it != this->_factMap.end(); ++it) {
 		std::cout << "\t" << (*it).second << std::endl;

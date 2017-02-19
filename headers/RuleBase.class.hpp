@@ -17,6 +17,7 @@ public:
 	void addRule( std::list<ParsedNode*> & nodeRuleList);
 	void printAllRule(void) const;
 	Rule * getRuleByConclusion(Fact * f);
+	std::list<Operator *> getOperator(void) const;
 	std::list<ParsedNode *>::iterator makeNPI(std::list<ParsedNode *>::iterator & it,
 		std::list<ParsedNode *> & nodeRuleList,
 		std::list<IObject *> & objList);
@@ -28,7 +29,7 @@ private:
 	RuleBase & operator=(RuleBase const & rhs);
 	Operator * addOperator(e_tk token);
 
-	std::map<e_tk, Operator *> _operandMap;
+	std::list<Operator *> _operatorList;
 	std::list<Rule*> _ruleList;
 	static RuleBase * _singleton;
 };
