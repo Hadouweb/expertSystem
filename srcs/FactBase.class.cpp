@@ -25,14 +25,24 @@ FactBase *FactBase::getInstance(void) {
 }
 
 void FactBase::initFact(std::list<ParsedNode *> parsedList) {
+	bool findInitFact = false;
 	for (std::list<ParsedNode *>::iterator it = parsedList.begin(); it != parsedList.end(); ++it) {
 		if ((*it)->getToken() == TK_INIT_FACT) {
+			findInitFact = true;
+			if ((*it)->getValue().compare("=") == 0)
+				continue ;
 			std::string val = (*it)->getValue();
 			for (std::string::iterator itFact = val.begin(); itFact != val.end(); ++itFact) {
 				std::string s(1, *itFact);
 				this->addFact(s, true);
 			}
 		}
+	}
+
+	if (!findInitFact) {
+		Error * e = new Error(0, 0, "Token = is expected at the end");
+		e->pos = false;
+		Parser::pushError(e);
 	}
 }
 

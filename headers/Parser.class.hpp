@@ -12,6 +12,7 @@ struct Error {
 	Error(unsigned int col, unsigned int line, std::string type);
 	unsigned int col;
 	unsigned int line;
+	bool pos;
 	std::string type;
 };
 
@@ -22,15 +23,17 @@ public:
     ~Parser(void);
 
     void makeParsing(void);
-	std::list<Error*> getErrorList(void) const;
 	std::list<ParsedNode*> getParsedNodeList(void) const;
-	void printError(void);
 	void reduceList(void);
+
+	static std::list<Error*> errorList;
+	static void pushError(unsigned int col, unsigned int line, std::string type);
+	static void pushError(Error * e);
+	static void printError(void);
 
 private:
 	Parser(Parser const & src);
 	Parser & operator=(Parser const & rhs);
-	void pushError(unsigned int col, unsigned int line, std::string type);
 	bool authorizedOperator(e_tk token);
 	void skipSpace(void);
 
@@ -74,10 +77,7 @@ private:
 
 	std::list<Node *> _nodeList;
 	std::list<Node *>::iterator _currentIt;
-	std::list<std::string> _errorStack;
-	std::list<Error*> _errorList;
 	std::list<ParsedNode*> _parsedNodeList;
-
 };
 
 #endif

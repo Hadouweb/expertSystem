@@ -2,6 +2,7 @@
 # define RULE_CLASS_HPP
 
 #include <list>
+#include <iostream>
 #include "IObject.hpp"
 
 class Rule {
@@ -13,6 +14,8 @@ public:
 	std::list<IObject*> getPremiseList(void) const;
 	IObject* getLinkOperand(void) const;
 	std::list<IObject*> getConclusionList(void) const;
+	void makeNPI(void);
+
 	bool used;
 
 private:

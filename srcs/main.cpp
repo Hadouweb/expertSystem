@@ -3,7 +3,18 @@
 #include "Parser.class.hpp"
 #include "Motor.class.hpp"
 
+bool test(std::string c) {
+	std::cout << "test de " << c << std::endl;
+	return true;
+}
+
+
 int		main(int ac, char **av) {
+
+	if (test("X") || test("V"))
+		;
+
+
 	Lexer * l;
 
 	if (ac > 1)
@@ -32,10 +43,9 @@ int		main(int ac, char **av) {
 
 	p.reduceList();
 
-	std::list<Error*> errorListParser = p.getErrorList();
 	std::list<ParsedNode*> parsedListParser = p.getParsedNodeList();
 
-	if (errorListParser.size() > 0) {
+	if (Parser::errorList.size() > 0) {
 		p.printError();
 		exit(1);
 	}

@@ -5,14 +5,18 @@ Motor::Motor(std::list<ParsedNode *> parsedList)
 
 	this->_rDB = RuleBase::getInstance();
 	this->_rDB->initRule(this->_parsedList);
-	this->_rDB->printAllRule();
+	//this->_rDB->printAllRule();
 
 	this->_fDB = FactBase::getInstance();
 	this->_fDB->initFact(parsedList);
-	this->_fDB->printFactBase();
+	//this->_fDB->printFactBase();
 
 	this->initQueryFact();
-	this->printQueryFact();
+
+	if (Parser::errorList.size() > 0) {
+		Parser::printError();
+		exit(1);
+	}
 
 	std::cout << "*********************************************" << std::endl;
 	this->searchQuery();
@@ -33,9 +37,12 @@ Motor &Motor::operator=(Motor const &rhs) {
 }
 
 void Motor::initQueryFact(void) {
+	bool findQueryFact = false;
+
 	for (std::list<ParsedNode *>::iterator it = this->_parsedList.begin();
 		it != this->_parsedList.end(); ++it) {
 		if ((*it)->getToken() == TK_QUERY) {
+			findQueryFact = true;
 			std::string val = (*it)->getValue();
 			for (std::string::iterator itFact = val.begin(); itFact != val.end(); ++itFact) {
 				std::string s(1, *itFact);
@@ -43,6 +50,12 @@ void Motor::initQueryFact(void) {
 				this->_queryFactList.push_back(f);
 			}
 		}
+	}
+
+	if (!findQueryFact) {
+		Error * e = new Error(0, 0, "Token ? is expected at the end");
+		e->pos = false;
+		Parser::pushError(e);
 	}
 }
 
@@ -66,6 +79,8 @@ void Motor::makeGraph(Fact * q) {
 	std::cout << "*********************************************" << std::endl;
 	std::cout << "Make Graph for query: (" << q << ")" << std::endl;
 	Rule * r = this->_rDB->getRuleByConclusion(q);
+	if (r == NULL)
+		return ;
 	std::cout << r << std::endl;
 
 	std::list<IObject*> premise = r->getPremiseList();

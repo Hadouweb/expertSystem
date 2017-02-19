@@ -25,7 +25,7 @@ Parser &Parser::operator=(Parser const &rhs) {
 }
 
 Error::Error(unsigned int col, unsigned int line, std::string type)
-	: col(col), line(line), type(type) {
+	: col(col), line(line), pos(true), type(type) {
 
 }
 
@@ -126,6 +126,8 @@ void Parser::tkFact(void) {
 void Parser::tkInitFact(void) {
 	std::list<Node*>::iterator & it = this->_currentIt;
 	std::list<Node*>::iterator tmpItPrev = std::prev(it, 1);
+	this->_parsedNodeList.push_back(new ParsedNode(TK_INIT_FACT, (*it)->getValue()));
+
 	it++;
 	if (it != this->_nodeList.end()) {
 		if ((*tmpItPrev)->getToken() == TK_END_LINE) {
@@ -135,17 +137,21 @@ void Parser::tkInitFact(void) {
 					it++;
 				}
 			}
+			else if ((*it)->getToken() == TK_END_LINE)
+				return ;
 			else
 				this->pushError((*it)->getNumCol(), (*it)->getNumLine(), "Unexpected token from InitFact");
 		} else
 			this->pushError((*it)->getNumCol(), (*it)->getNumLine(), "Unexpected token from InitFact");
-	} else
-		this->pushError((*it)->getNumCol(), (*it)->getNumLine(), "Character expected from InitFact");
+	}
 }
 
 void Parser::tkQuery(void) {
 	std::list<Node*>::iterator & it = this->_currentIt;
 	std::list<Node*>::iterator tmpItPrev = std::prev(it, 1);
+	unsigned int col = (*it)->getNumCol();
+	unsigned int line = (*it)->getNumLine();
+
 	it++;
 	if (it != this->_nodeList.end()) {
 		if ((*tmpItPrev)->getToken() == TK_END_LINE) {
@@ -160,7 +166,7 @@ void Parser::tkQuery(void) {
 		} else
 			this->pushError((*it)->getNumCol(), (*it)->getNumLine(), "Unexpected token from Query");
 	} else
-		this->pushError((*it)->getNumCol(), (*it)->getNumLine(), "Character expected from Query");
+		this->pushError(col, line, "Unexpected token from InitFact");
 }
 
 void Parser::tkImplie(void) {
@@ -440,27 +446,30 @@ void Parser::reduceList(void) {
 	}
 }
 
-std::list<Error*> Parser::getErrorList(void) const {
-	return this->_errorList;
-}
-
 std::list<ParsedNode *> Parser::getParsedNodeList(void) const {
 	return this->_parsedNodeList;
 }
 
 void Parser::printError(void) {
-	for (std::list<Error *>::iterator it = this->_errorList.begin(); it != this->_errorList.end(); ++it) {
+	for (std::list<Error *>::iterator it = Parser::errorList.begin(); it != Parser::errorList.end(); ++it) {
 		Parser::SynthaxException e;
-		std::cerr << e.what() << ", " << (*it)->type << " col : " << (*it)->col << " line : " << (*it)->line << std::endl;
+		if ((*it)->pos == false)
+			std::cerr << e.what() << ", " << (*it)->type << std::endl;
+		else
+			std::cerr << e.what() << ", " << (*it)->type << " col : " << (*it)->col << " line : " << (*it)->line << std::endl;
 	}
-	for (std::list<Error *>::iterator it = this->_errorList.begin(); it != this->_errorList.end(); ++it) {
+	for (std::list<Error *>::iterator it = Parser::errorList.begin(); it != Parser::errorList.end(); ++it) {
 		delete *it;
 	}
-	this->_errorList.clear();
+	Parser::errorList.clear();
 }
 
 void Parser::pushError(unsigned int col, unsigned int line, std::string type) {
-	this->_errorList.push_back(new Error(col, line, type));
+	Parser::errorList.push_back(new Error(col, line, type));
+}
+
+void Parser::pushError(Error * e) {
+	Parser::errorList.push_back(e);
 }
 
 Parser::SynthaxException::SynthaxException(void) { }
@@ -480,3 +489,5 @@ Parser::SynthaxException & Parser::SynthaxException::operator=(const Parser::Syn
 const char *Parser::SynthaxException::what() const throw() {
 	return "Exception: Synthax Error";
 }
+
+std::list<Error*> Parser::errorList;

@@ -1,8 +1,8 @@
 C + A       => E
-E | B       => C
+E + B       => C
 F | B + A   => A
 C + E       => D
 
-=B
+=BF
 
 ?D

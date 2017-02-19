@@ -6,6 +6,7 @@
 #include <iostream>
 #include "ParsedNode.class.hpp"
 #include "Fact.class.hpp"
+#include "Parser.class.hpp"
 
 class FactBase {
 public:
