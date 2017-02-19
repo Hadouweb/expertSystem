@@ -16,11 +16,15 @@ public:
 	virtual std::list<IObject *> getChild(void) const;
 	static bool isOperator(e_tk token);
 
+	virtual void setParent(IObject *p);
+	virtual IObject *getParent(void) const;
+
 private:
 	Operator(void);
 	Operator(Operator const & src);
 	Operator & operator=(Operator const & rhs);
 
+	IObject * _parent;
 	std::list<IObject*> _childList;
 	const e_tk _token;
 };

@@ -53,6 +53,7 @@ std::string Operator::getName(void) const {
 }
 
 void Operator::addChild(IObject *c) {
+	c->setParent(this);
 	this->_childList.push_back(c);
 }
 
@@ -73,4 +74,12 @@ bool Operator::isOperator(e_tk token) {
 		default:
 			return false;
 	}
+}
+
+void Operator::setParent(IObject *p) {
+	this->_parent = p;
+}
+
+IObject *Operator::getParent(void) const {
+	return this->_parent;
 }

@@ -3,18 +3,7 @@
 #include "Parser.class.hpp"
 #include "Motor.class.hpp"
 
-bool test(std::string c) {
-	std::cout << "test de " << c << std::endl;
-	return true;
-}
-
-
 int		main(int ac, char **av) {
-
-	if (test("X") || test("V"))
-		;
-
-
 	Lexer * l;
 
 	if (ac > 1)

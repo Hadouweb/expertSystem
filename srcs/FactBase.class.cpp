@@ -29,12 +29,12 @@ void FactBase::initFact(std::list<ParsedNode *> parsedList) {
 	for (std::list<ParsedNode *>::iterator it = parsedList.begin(); it != parsedList.end(); ++it) {
 		if ((*it)->getToken() == TK_INIT_FACT) {
 			findInitFact = true;
-			if ((*it)->getValue().compare("=") == 0)
-				continue ;
 			std::string val = (*it)->getValue();
 			for (std::string::iterator itFact = val.begin(); itFact != val.end(); ++itFact) {
 				std::string s(1, *itFact);
-				this->addFact(s, true);
+				if (s.compare("=") == 0)
+					continue ;
+				this->addFact(s, 1);
 			}
 		}
 	}
@@ -46,7 +46,7 @@ void FactBase::initFact(std::list<ParsedNode *> parsedList) {
 	}
 }
 
-Fact *FactBase::addFact(std::string name, bool value) {
+Fact *FactBase::addFact(std::string name, uint8_t value) {
 	std::map<std::string, Fact*>::iterator it = this->_factMap.find(name);
 	Fact * f;
 	if (it == this->_factMap.end()) {

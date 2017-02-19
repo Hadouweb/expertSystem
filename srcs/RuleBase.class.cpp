@@ -108,14 +108,14 @@ void RuleBase::addRule(std::list<ParsedNode *> & nodeRuleList) {
 
 	// Make premise list and linkOperator
 	it = makeNPI(it, nodeRuleList, premiseList);
+	e_tk token = (*it)->getToken();
 
-	for (std::list<IObject *>::iterator it = premiseList.begin(); it != premiseList.end(); ++it) {
+	/*for (std::list<IObject *>::iterator it = premiseList.begin(); it != premiseList.end(); ++it) {
 		std::cout << (*it)->getName() << " " << Node::convertEnumTk((*it)->getToken()) << std::endl;
 	}
 
-	e_tk token = (*it)->getToken();
 	std::cout << Node::convertEnumTk(token) << std::endl;
-	std::cout << std::endl;
+	std::cout << std::endl;*/
 
 	linkOperator = this->addOperator(token);
 	it++;

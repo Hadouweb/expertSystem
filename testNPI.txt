@@ -1,6 +1,6 @@
 A  |  B  +  C =>  D # ABC+|
 (A  |  B)  +  C => D # AB  C+|
 
-=
+=B
 
 ?A

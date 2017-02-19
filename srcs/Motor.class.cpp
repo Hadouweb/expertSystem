@@ -5,13 +5,15 @@ Motor::Motor(std::list<ParsedNode *> parsedList)
 
 	this->_rDB = RuleBase::getInstance();
 	this->_rDB->initRule(this->_parsedList);
-	this->_rDB->printAllRule();
 
 	this->_fDB = FactBase::getInstance();
 	this->_fDB->initFact(parsedList);
-	//this->_fDB->printFactBase();
 
 	this->initQueryFact();
+
+	//this->_fDB->printFactBase();
+	std::cout << std::endl;
+	//this->_rDB->printAllRule();
 
 	if (Parser::errorList.size() > 0) {
 		Parser::printError();
@@ -19,7 +21,7 @@ Motor::Motor(std::list<ParsedNode *> parsedList)
 	}
 
 	std::cout << "*********************************************" << std::endl;
-	//this->searchQuery();
+	this->searchQuery();
 }
 
 Motor::~Motor(void) { }
@@ -79,15 +81,21 @@ void Motor::makeGraph(Fact * q) {
 	std::cout << "*********************************************" << std::endl;
 	std::cout << "Make Graph for query: (" << q << ")" << std::endl;
 	Rule * r = this->_rDB->getRuleByConclusion(q);
-	if (r == NULL)
-		return ;
 	std::cout << r << std::endl;
+	r->used = true;
+	r = this->_rDB->getRuleByConclusion(q);
+	std::cout << r << std::endl;
+	r->used = true;
+	//if (r == NULL)
+	//	return ;
+
 
 	std::list<IObject*> premise = r->getPremiseList();
 	for (std::list<IObject*>::iterator it = premise.begin(); it != premise.end(); it++) {
 		if ((*it)->getToken() == TK_FACT) {
 			Rule *r = this->_rDB->getRuleByConclusion(static_cast<Fact *>(*it));
-			std::cout << r << std::endl;
+			if (r != NULL)
+				std::cout << r << std::endl;
 		}
 	}
 }
