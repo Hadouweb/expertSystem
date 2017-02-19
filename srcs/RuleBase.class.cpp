@@ -128,8 +128,10 @@ Rule *RuleBase::getRuleByConclusion(Fact *f) {
 		if ((*itR)->used == false) {
 			std::list<IObject*> cList = (*itR)->getConclusionList();
 			for (std::list<IObject *>::iterator itC = cList.begin(); itC != cList.end(); ++itC) {
-				if ((*itC)->getName() == f->getName())
+				if ((*itC)->getName() == f->getName()) {
+					(*itR)->used = true;
 					return *itR;
+				}
 			}
 		}
 	}

@@ -85,7 +85,6 @@ void Motor::pushOnGraph(IObject *q, Rule *r,
 {
 	while (it != premiseList.rend()) {
 		e_tk token = (*it)->getToken();
-		std::cout << (*it)->getName() << std::endl;
 		if (Operator::isOperator(token)) {
 			IObject *obj = *it;
 			stack.push_front(*it);
@@ -94,14 +93,15 @@ void Motor::pushOnGraph(IObject *q, Rule *r,
 			this->pushOnGraph(obj, r, it, premiseList, stack);
 		} else if (token == TK_FACT) {
 			IObject * io = stack.front();
-			if (io->getChild().size() < 1)
+			if (io && io->getChild().size() < 1)
 				g->addLink(io, *it);
-			else if (io->getToken() != TK_NOT && io->getChild().size() < 2)
+			else if (io && io->getToken() != TK_NOT && io->getChild().size() < 2)
 				g->addLink(io, *it);
-			else {
+			else if (io) {
 				stack.pop_front();
 				g->addLink(stack.front(), *it);
-			}
+			} else
+				g->addLink(q, *it);
 			this->findRule(*it);
 			it++;
 		}
@@ -110,13 +110,17 @@ void Motor::pushOnGraph(IObject *q, Rule *r,
 
 void Motor::findRule(IObject * q) {
 	Rule * r = NULL;
-	if (q->getToken() == TK_FACT)
-		r = this->_rDB->getRuleByConclusion(static_cast<Fact*>(q));
-	if (r != NULL) {
-		std::list<IObject*> premiseList = r->getPremiseList();
-		std::list<IObject*>::reverse_iterator it = premiseList.rbegin();
-		std::list<IObject*> stack;
-		this->pushOnGraph(q, r, it, premiseList, stack);
+	if (q->getToken() == TK_FACT) {
+		while (42) {
+			r = this->_rDB->getRuleByConclusion(static_cast<Fact *>(q));
+			if (r != NULL) {
+				std::list<IObject *> premiseList = r->getPremiseList();
+				std::list<IObject *>::reverse_iterator it = premiseList.rbegin();
+				std::list<IObject *> stack;
+				this->pushOnGraph(q, r, it, premiseList, stack);
+			} else
+				break ;
+		}
 	}
 }
 
@@ -148,16 +152,18 @@ void Motor::printAllObject(bool withParent, bool withChild) const {
 	std::list<Operator *> opList = this->_rDB->getOperator();
 	std::cout << "AllOperator: " << std::endl << std::endl;
 	for (std::list<Operator *>::const_iterator it = opList.begin(); it != opList.end(); ++it) {
-		if (withParent && (*it)->getParent())
-			std::cout << "\t" << "Parent: " << (*it)->getParent()->toString() << std::endl;
-		std::cout  << (*it)->toString() << std::endl;
-		if (withChild) {
-			std::list<IObject*> child = (*it)->getChild();
-			for (std::list<IObject *>::const_iterator itC = child.begin();
-				 itC != child.end(); ++itC) {
-				std::cout << "\t" << "Child: " << (*itC)->toString() << std::endl;
+		if (Operator::isOperator((*it)->getToken())) {
+			if (withParent && (*it)->getParent())
+				std::cout << "\t" << "Parent: " << (*it)->getParent()->toString() << std::endl;
+			std::cout << (*it)->toString() << std::endl;
+			if (withChild) {
+				std::list<IObject *> child = (*it)->getChild();
+				for (std::list<IObject *>::const_iterator itC = child.begin();
+					 itC != child.end(); ++itC) {
+					std::cout << "\t" << "Child: " << (*itC)->toString() << std::endl;
+				}
 			}
+			std::cout << std::endl;
 		}
-		std::cout << std::endl;
 	}
 }
