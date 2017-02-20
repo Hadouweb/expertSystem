@@ -2,10 +2,10 @@ B + C   => A
 D | E   => B
 B       => C
 
-=       # A->false
+#=       # A->false
 
 ?A
 
 #=D     # A
 #=E     # A
-#=DE    # A
+=DE    # A

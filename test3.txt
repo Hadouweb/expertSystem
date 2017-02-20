@@ -9,6 +9,6 @@ N       => M
 
 ?AFKP
 
-=DEIJOP     #AFKP
+# =DEIJOP     #AFKP
 
-#=DEIJP     #AFP
+=DEIJP     #AFP

@@ -127,20 +127,22 @@ void Parser::tkInitFact(void) {
 	std::list<Node*>::iterator & it = this->_currentIt;
 	std::list<Node*>::iterator tmpItPrev = std::prev(it, 1);
 	this->_parsedNodeList.push_back(new ParsedNode(TK_INIT_FACT, (*it)->getValue()));
+	bool haveFact = false;
 
 	it++;
 	if (it != this->_nodeList.end()) {
 		if ((*tmpItPrev)->getToken() == TK_END_LINE) {
 			if ((*it)->getToken() == TK_FACT) {
+				haveFact = true;
 				while (it != this->_nodeList.end() && (*it)->getToken() == TK_FACT) {
 					this->_parsedNodeList.push_back(new ParsedNode(TK_INIT_FACT, (*it)->getValue()));
 					it++;
 				}
 			}
 			this->skipSpace();
-			if ((*it)->getToken() == TK_END_LINE)
+			if (it != this->_nodeList.end() && (*it)->getToken() == TK_END_LINE)
 				return ;
-			else
+			else if (haveFact == false)
 				this->pushError((*it)->getNumCol(), (*it)->getNumLine(), "Unexpected token from InitFact");
 		} else
 			this->pushError((*it)->getNumCol(), (*it)->getNumLine(), "Unexpected token from InitFact");

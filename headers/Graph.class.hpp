@@ -15,6 +15,7 @@ public:
 	void printAllNode(void) const;
 	std::map<int, IObject*> getObjectMap(void) const;
 	void exploreDFS(IObject * node);
+	void execOp(IObject *curr, IObject * a, IObject * b);
 
 private:
 	Graph(Graph const & src);

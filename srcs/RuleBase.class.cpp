@@ -24,7 +24,10 @@ void RuleBase::initRule(std::list<ParsedNode *> parsedList) {
 
 	if (it != parsedList.end() && (*it)->getToken() == TK_END_LINE)
 		it++;
-	while (it != parsedList.end() && (*it)->getToken() != TK_INIT_FACT) {
+	while (it != parsedList.end() &&
+			(*it)->getToken() != TK_INIT_FACT &&
+			(*it)->getToken() != TK_QUERY) {
+
 		if ((*it)->getToken() == TK_END_LINE) {
 			this->addRule(ruleList);
 			ruleList.clear();
@@ -101,6 +104,9 @@ void RuleBase::addRule(std::list<ParsedNode *> & nodeRuleList) {
 	std::list<IObject*> premiseList;
 	IObject *linkOperator;
 	std::list<IObject*> conclusionList;
+
+	std::cout << (*it)->getValue() << " " << Node::convertEnumTk((*it)->getToken()) << std::endl;
+
 
 	// Make premise list and linkOperator
 	it = makeNPI(it, nodeRuleList, premiseList);

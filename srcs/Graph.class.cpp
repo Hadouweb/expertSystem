@@ -33,6 +33,37 @@ std::map<int, IObject*> Graph::getObjectMap(void) const {
 	return this->_dataSet;
 }
 
+void Graph::execOp(IObject *curr, IObject *a, IObject *b) {
+	//std::cout << "LOL " << curr->toString(false, false) << std::endl;
+	switch(curr->getToken()) {
+		case TK_PLUS: {
+			if (a->getValue() == 1 && b->getValue() == 1)
+				curr->setValue(1);
+			break;
+		}
+		case TK_OR: {
+			if (a->getValue() == 1 || b->getValue() == 1)
+				curr->setValue(1);
+			break;
+		}
+		case TK_XOR: {
+			if (a->getValue() == 1 ^ b->getValue() == 1)
+				curr->setValue(1);
+			break;
+		}
+		case TK_FACT: {
+			curr->setValue(a->getValue());
+			break;
+		}
+		case TK_NOT: {
+			curr->setValue(!a->getValue());
+			break;
+		}
+		default:
+			return;
+	}
+}
+
 void Graph::exploreDFS(IObject *node) {
 	node->setVisited(true);
 	std::list<IObject *> childList = node->getChild();
@@ -40,31 +71,24 @@ void Graph::exploreDFS(IObject *node) {
 		if (!(*it)->getVisited())
 			this->exploreDFS(*it);
 	}
-	if (node->getToken() == TK_PLUS) {
+	if (node->getToken() == TK_PLUS ||
+		node->getToken() == TK_OR ||
+		node->getToken() == TK_XOR) {
 		std::list<IObject *>::iterator itA = childList.begin();
 		std::list<IObject *>::iterator itB = std::next(itA, 1);
-
-		if ((*itA)->getValue() == 1 && (*itB)->getValue() == 1)
-			node->setValue(1);
-	}
-	else if (node->getToken() == TK_OR) {
-		std::list<IObject *>::iterator itA = childList.begin();
-		std::list<IObject *>::iterator itB = std::next(itA, 1);
-
-		if ((*itA)->getValue() == 1 || (*itB)->getValue() == 1)
-			node->setValue(1);
-	}
-	else if (node->getToken() == TK_XOR) {
-		std::list<IObject *>::iterator itA = childList.begin();
-		std::list<IObject *>::iterator itB = std::next(itA, 1);
-
-		if ((*itA)->getValue() == 1 ^ (*itB)->getValue() == 1)
-			node->setValue(1);
+		this->execOp(node, *itA, *itB);
 	}
 	else if (node->getToken() == TK_FACT) {
 		for (std::list<IObject *>::iterator it = childList.begin(); it != childList.end(); ++it) {
-			node->setValue((*it)->getValue());
+			//std::cout << "* " << (*it)->toString(false, false) << std::endl;
+			this->execOp(node, *it, NULL);
+			if (node->getValue() == 1)
+				break;
 		}
+	}
+	else if (node->getToken() == TK_NOT) {
+		std::list<IObject *>::iterator itA = childList.begin();
+		this->execOp(node, *itA, NULL);
 	}
 	std::cout << node->toString(true, false) << std::endl;
 	std::cout << "-----------------------------------------" << std::endl;

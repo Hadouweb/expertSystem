@@ -5,6 +5,7 @@ Motor::Motor(std::list<ParsedNode *> parsedList)
 
 	this->g = new Graph();
 	this->_rDB = RuleBase::getInstance();
+
 	this->_rDB->initRule(this->_parsedList);
 
 	this->_fDB = FactBase::getInstance();
@@ -12,7 +13,7 @@ Motor::Motor(std::list<ParsedNode *> parsedList)
 
 	this->initQueryFact();
 
-	//this->_fDB->printFactBase();
+	this->_fDB->printAllFact();
 	std::cout << std::endl;
 	//this->_rDB->printAllRule();
 
@@ -23,6 +24,8 @@ Motor::Motor(std::list<ParsedNode *> parsedList)
 
 	std::cout << "*********************************************" << std::endl;
 	this->searchQuery();
+
+	//this->_fDB->printAllFact();
 }
 
 Motor::~Motor(void) { }
@@ -41,7 +44,6 @@ Motor &Motor::operator=(Motor const &rhs) {
 
 void Motor::initQueryFact(void) {
 	bool findQueryFact = false;
-
 	for (std::list<ParsedNode *>::iterator it = this->_parsedList.begin();
 		it != this->_parsedList.end(); ++it) {
 		if ((*it)->getToken() == TK_QUERY) {
