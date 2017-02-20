@@ -1,7 +1,7 @@
-F          => B
-G          => B
-A + B + C  => D
+A | B + F  => D
+F          => G
+G          => F
 
-=
+=AF
 
-?DD
+?D

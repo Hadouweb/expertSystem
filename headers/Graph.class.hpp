@@ -4,6 +4,7 @@
 #include "IObject.hpp"
 #include <iostream>
 #include <map>
+#include <list>
 
 class Graph {
 public:
@@ -13,6 +14,7 @@ public:
 	void addLink(IObject * parent, IObject * child);
 	void printAllNode(void) const;
 	std::map<int, IObject*> getObjectMap(void) const;
+	void exploreDFS(IObject * node);
 
 private:
 	Graph(Graph const & src);

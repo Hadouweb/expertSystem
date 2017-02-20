@@ -29,28 +29,55 @@ e_tk Operator::getToken(void) const {
 	return this->_token;
 }
 
-std::string Operator::toString(void) const {
+uint8_t Operator::getValue(void) const {
+	return this->_value;
+}
+
+void Operator::setValue(uint8_t val) {
+	this->_value = val;
+}
+
+std::string Operator::toString(bool withParent, bool withChild) const {
+	std::stringstream ss;
+
 	std::string indexStrDebug = std::to_string(this->indexDebug);
+	if (withParent && this->getParent())
+		ss << "\tParent: " << this->getParent()->toString(false, false) << std::endl;
 	switch (this->_token) {
 		case TK_PLUS:
-			return "+" + indexStrDebug;
+			ss << "Name: " << "[+]" << indexStrDebug;
+			break;
 		case TK_OR:
-			return "|" + indexStrDebug;
+			ss << "Name: " << "[|]" << indexStrDebug;
+			break;
 		case TK_XOR:
-			return "^" + indexStrDebug;
+			ss << "Name: " << "[^]" << indexStrDebug;
+			break;
 		case TK_NOT:
-			return "!" + indexStrDebug;
+			ss << "Name: " << "[!]" << indexStrDebug;
+			break;
 		case TK_IMPLIE:
-			return "=>" + indexStrDebug;
+			ss << "Name: " << "[=>]" << indexStrDebug;
+			break;
 		case TK_IF_AND_ONLY_IF:
-			return "<=>" + indexStrDebug;
+			ss << "Name: " << "[<=>]" << indexStrDebug;
+			break;
 		default:
-			return "???";
+			ss << "Name: " << "???" << std::endl;
 	}
+	if (withChild) {
+		std::list<IObject*> child = this->getChild();
+		for (std::list<IObject *>::const_iterator itC = child.begin();
+			itC != child.end(); ++itC) {
+			ss << "\tChild: " << (*itC)->toString(false, false) << std::endl;
+		}
+	}
+
+	return ss.str();
 }
 
 std::string Operator::getName(void) const {
-	return this->toString();
+	return this->toString(false, false);
 }
 
 void Operator::addChild(IObject *c) {
@@ -82,4 +109,12 @@ void Operator::setParent(IObject *p) {
 
 IObject *Operator::getParent(void) const {
 	return this->_parent;
+}
+
+void Operator::setVisited(bool val) {
+	this->_visited = val;
+}
+
+bool Operator::getVisited(void) const {
+	return this->_visited;
 }

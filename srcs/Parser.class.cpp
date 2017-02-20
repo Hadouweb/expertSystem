@@ -137,7 +137,8 @@ void Parser::tkInitFact(void) {
 					it++;
 				}
 			}
-			else if ((*it)->getToken() == TK_END_LINE)
+			this->skipSpace();
+			if ((*it)->getToken() == TK_END_LINE)
 				return ;
 			else
 				this->pushError((*it)->getNumCol(), (*it)->getNumLine(), "Unexpected token from InitFact");

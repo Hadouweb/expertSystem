@@ -43,15 +43,15 @@ std::ostream &operator<<(std::ostream &os, Rule *r) {
 	os << "Premise: " << std::endl;
 	std::list<IObject*> p = r->getPremiseList();
 	for (std::list<IObject*>::iterator it = p.begin(); it != p.end(); ++it)
-		os << "\t" << (*it)->toString() << std::endl;
+		os << "\t" << (*it)->toString(false, false) << std::endl;
 
 	os << "Link: " << std::endl;
-	os << "\t" << r->getLinkOperand()->toString() << std::endl;
+	os << "\t" << r->getLinkOperand()->toString(false, false) << std::endl;
 
 	os << "Conclusion: " << std::endl;
 	std::list<IObject*> c = r->getConclusionList();
 	for (std::list<IObject*>::iterator it = c.begin(); it != c.end(); ++it)
-		os << "\t" << (*it)->toString() << std::endl;
+		os << "\t" << (*it)->toString(false, false) << std::endl;
 
 	return os;
 }

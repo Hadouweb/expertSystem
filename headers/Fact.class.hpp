@@ -13,20 +13,23 @@ public:
     virtual ~Fact(void);
 
 	std::string getName(void) const;
-	uint8_t getValue(void) const;
 	virtual e_tk getToken(void) const;
-	void setValue(uint8_t val);
-	std::string toString(void) const;
+	std::string toString(bool withParent, bool withChild) const;
+	virtual uint8_t getValue(void) const;
+	virtual void setValue(uint8_t val);
 	virtual void addChild(IObject *c);
 	virtual std::list<IObject *> getChild(void) const;
 	virtual void setParent(IObject *p);
 	virtual IObject *getParent(void) const;
+	virtual void setVisited(bool val);
+	virtual bool getVisited(void) const;
 
 private:
 	Fact(void);
 	Fact(Fact const & src);
 	Fact & operator=(Fact const & rhs);
 
+	bool _visited;
 	IObject * _parent;
 	std::list<IObject*> _childList;
 	const e_tk _token;

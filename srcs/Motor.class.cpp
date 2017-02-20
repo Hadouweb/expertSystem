@@ -128,7 +128,8 @@ void Motor::makeGraph(Fact * q) {
 	std::cout << "*********************************************" << std::endl;
 	std::cout << "Make Graph for query: (" << q << ")" << std::endl;
 	this->findRule(q);
-	this->printAllObject(true, true);
+	//this->printAllObject(true, true);
+	this->g->exploreDFS(q);
 }
 
 void Motor::printAllObject(bool withParent, bool withChild) const {
@@ -136,34 +137,14 @@ void Motor::printAllObject(bool withParent, bool withChild) const {
 	std::map<std::string, Fact *> factMap = this->_fDB->getAllFact();
 	std::cout << "AllFact: " << std::endl << std::endl;
 	for (std::map<std::string, Fact*>::const_iterator it = factMap.begin(); it != factMap.end(); ++it) {
-		if (withParent && (*it).second->getParent())
-			std::cout << "\t" << "Parent: " << (*it).second->getParent()->toString() << std::endl;
-		std::cout  << (*it).second << std::endl;
-		if (withChild) {
-			std::list<IObject*> child = (*it).second->getChild();
-			for (std::list<IObject *>::const_iterator itC = child.begin();
-				itC != child.end(); ++itC) {
-				std::cout << "\t" << "Child: " << (*itC)->toString() << std::endl;
-			}
-		}
-		std::cout << std::endl;
+		std::cout << (*it).second->toString(withParent, withChild) << std::endl;
 	}
 
 	std::list<Operator *> opList = this->_rDB->getOperator();
 	std::cout << "AllOperator: " << std::endl << std::endl;
 	for (std::list<Operator *>::const_iterator it = opList.begin(); it != opList.end(); ++it) {
 		if (Operator::isOperator((*it)->getToken())) {
-			if (withParent && (*it)->getParent())
-				std::cout << "\t" << "Parent: " << (*it)->getParent()->toString() << std::endl;
-			std::cout << (*it)->toString() << std::endl;
-			if (withChild) {
-				std::list<IObject *> child = (*it)->getChild();
-				for (std::list<IObject *>::const_iterator itC = child.begin();
-					 itC != child.end(); ++itC) {
-					std::cout << "\t" << "Child: " << (*itC)->toString() << std::endl;
-				}
-			}
-			std::cout << std::endl;
+			std::cout << (*it)->toString(withParent, withChild) << std::endl;
 		}
 	}
 }

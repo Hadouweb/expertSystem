@@ -42,9 +42,19 @@ e_tk Fact::getToken(void) const {
 	return this->_token;
 }
 
-std::string Fact::toString(void) const {
+std::string Fact::toString(bool withParent, bool withChild) const {
 	std::stringstream ss;
-	ss << "Name: " << this->getName() << " | Value " << static_cast<int>(this->getValue());
+	if (withParent && this->getParent())
+		ss << "\t" << "Parent: " << this->getParent()->toString(false, false) << std::endl;
+	ss << "Name: " << this->getName() << " Value " << static_cast<int>(this->getValue());
+	if (withChild) {
+		std::list<IObject*> child = this->getChild();
+		for (std::list<IObject *>::const_iterator itC = child.begin();
+			itC != child.end(); ++itC) {
+			ss << "\t" << "Child: " << (*itC)->toString(false, false) << std::endl;
+		}
+	}
+
 	return ss.str();
 }
 
@@ -62,6 +72,14 @@ void Fact::setParent(IObject *p) {
 
 IObject *Fact::getParent(void) const {
 	return this->_parent;
+}
+
+void Fact::setVisited(bool val) {
+	this->_visited = val;
+}
+
+bool Fact::getVisited(void) const {
+	return this->_visited;
 }
 
 std::ostream &operator<<(std::ostream &os, Fact *f) {
