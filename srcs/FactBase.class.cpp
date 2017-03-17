@@ -34,7 +34,7 @@ void FactBase::initFact(std::list<ParsedNode *> parsedList) {
 				std::string s(1, *itFact);
 				if (s.compare("=") == 0)
 					continue ;
-				this->addFact(s, 1);
+				this->addFact(s, 1, true);
 			}
 		}
 	}
@@ -46,7 +46,7 @@ void FactBase::initFact(std::list<ParsedNode *> parsedList) {
 	}
 }
 
-Fact *FactBase::addFact(std::string name, uint8_t value) {
+Fact *FactBase::addFact(std::string name, uint8_t value, bool isFactBase) {
 	std::map<std::string, Fact*>::iterator it = this->_factMap.find(name);
 	Fact * f;
 	if (it == this->_factMap.end()) {
@@ -55,6 +55,7 @@ Fact *FactBase::addFact(std::string name, uint8_t value) {
 	} else {
 		f = (*it).second;
 		f->setValue(value);
+		f->setIsFactBase(isFactBase);
 	}
 	return f;
 }

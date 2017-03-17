@@ -54,7 +54,7 @@ std::list<ParsedNode *>::iterator RuleBase::makeNPI(
 	while (it != nodeRuleList.end()) {
 		e_tk token = (*it)->getToken();
 		if (token == TK_FACT) {
-			Fact * f = FactBase::getInstance()->addFact((*it)->getValue(), false);
+			Fact * f = FactBase::getInstance()->addFact((*it)->getValue(), false, false);
 			objList.push_back(f);
 		} else {
 			Operator *op = this->addOperator(token);
@@ -105,7 +105,7 @@ void RuleBase::addRule(std::list<ParsedNode *> & nodeRuleList) {
 	IObject *linkOperator;
 	std::list<IObject*> conclusionList;
 
-	std::cout << (*it)->getValue() << " " << Node::convertEnumTk((*it)->getToken()) << std::endl;
+	//std::cout << (*it)->getValue() << " " << Node::convertEnumTk((*it)->getToken()) << std::endl;
 
 
 	// Make premise list and linkOperator

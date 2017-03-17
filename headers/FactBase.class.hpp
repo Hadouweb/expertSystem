@@ -14,7 +14,7 @@ public:
     virtual ~FactBase(void);
 
 	void initFact(std::list<ParsedNode*> parsedList);
-	Fact * addFact(std::string name, uint8_t value);
+	Fact * addFact(std::string name, uint8_t value, bool isFactBase);
 	Fact * getFactByName(std::string name);
 	std::map<std::string, Fact*> getAllFact(void) const;
 	void printAllFact(void) const;

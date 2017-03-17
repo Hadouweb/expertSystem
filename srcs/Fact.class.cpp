@@ -47,6 +47,7 @@ std::string Fact::toString(bool withParent, bool withChild) const {
 	if (withParent && this->getParent())
 		ss << "\t" << "Parent: " << this->getParent()->toString(false, false) << std::endl;
 	ss << "Name: " << this->getName() << " Value " << static_cast<int>(this->getValue());
+	ss << " isFactBase: " << this->getIsFactBase() << std::endl;
 	if (withChild) {
 		std::list<IObject*> child = this->getChild();
 		for (std::list<IObject *>::const_iterator itC = child.begin();
@@ -80,6 +81,14 @@ void Fact::setVisited(bool val) {
 
 bool Fact::getVisited(void) const {
 	return this->_visited;
+}
+
+bool Fact::getIsFactBase() const {
+	return this->_isFactBase;
+}
+
+void Fact::setIsFactBase(bool isFactBase) {
+	this->_isFactBase = isFactBase;
 }
 
 std::ostream &operator<<(std::ostream &os, Fact *f) {

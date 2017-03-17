@@ -13,8 +13,10 @@ public:
     virtual ~Fact(void);
 
 	std::string getName(void) const;
-	virtual e_tk getToken(void) const;
 	std::string toString(bool withParent, bool withChild) const;
+	bool getIsFactBase() const;
+	void setIsFactBase(bool isFactBase);
+	virtual e_tk getToken(void) const;
 	virtual uint8_t getValue(void) const;
 	virtual void setValue(uint8_t val);
 	virtual void addChild(IObject *c);
@@ -35,6 +37,7 @@ private:
 	const e_tk _token;
 	const std::string _name;
 	uint8_t _value;
+	bool _isFactBase;
 };
 
 std::ostream & operator<<(std::ostream & os, Fact *f);

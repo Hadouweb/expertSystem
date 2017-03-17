@@ -13,8 +13,8 @@ Motor::Motor(std::list<ParsedNode *> parsedList)
 
 	this->initQueryFact();
 
-	this->_fDB->printAllFact();
-	std::cout << std::endl;
+	//this->_fDB->printAllFact();
+	//std::cout << std::endl;
 	//this->_rDB->printAllRule();
 
 	if (Parser::errorList.size() > 0) {
@@ -22,10 +22,11 @@ Motor::Motor(std::list<ParsedNode *> parsedList)
 		exit(1);
 	}
 
-	std::cout << "*********************************************" << std::endl;
+	//std::cout << "*********************************************" << std::endl;
 	this->searchQuery();
 
 	//this->_fDB->printAllFact();
+	this->printQueryFact();
 }
 
 Motor::~Motor(void) { }
@@ -64,12 +65,19 @@ void Motor::initQueryFact(void) {
 	}
 }
 
-void Motor::printQueryFact(void) {
-	std::cout << std::endl;
-	std::cout << "Query:" << std::endl;
-	for (std::list<Fact*>::iterator it = this->_queryFactList.begin();
-		it != this->_queryFactList.end(); ++it) {
-		std::cout << "\t" << *it << std::endl;
+void Motor::printQueryFact(void)
+{
+	std::map<std::string, Fact *> factMap = this->_fDB->getAllFact();
+	std::stringstream ss;
+	for (std::map<std::string, Fact*>::const_iterator it = factMap.begin(); it != factMap.end(); ++it) {
+		if ((*it).second->getIsFactBase() == true)
+			ss << (*it).second->getName();
+	}
+	std::cout << "For init fact: " << ss.str() << std::endl;
+
+	for (std::list<Fact*>::iterator it = this->_queryFactList.begin(); it != this->_queryFactList.end(); ++it) {
+		std::cout << "\t" << (*it)->getName() << " is " << std::boolalpha <<
+				  static_cast<bool>((*it)->getValue()) << std::endl;
 	}
 }
 
@@ -127,8 +135,8 @@ void Motor::findRule(IObject * q) {
 }
 
 void Motor::makeGraph(Fact * q) {
-	std::cout << "*********************************************" << std::endl;
-	std::cout << "Make Graph for query: (" << q << ")" << std::endl;
+	//std::cout << "*********************************************" << std::endl;
+	//std::cout << "Make Graph for query: (" << q << ")" << std::endl;
 	this->findRule(q);
 	//this->printAllObject(true, true);
 	this->g->exploreDFS(q);
