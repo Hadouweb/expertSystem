@@ -1,14 +1,14 @@
-B       => A
-D + E   => B
-G + M   => F
-I + J   => G
-G       => M
-L + M   => K
-O + P   => L + N
-N       => M
+B => A
+D + E => B
+G + H => F
+I + J => G
+G => H
+L + M => K
+O + P => L + N
+N => M
+
 
 ?AFKP
 
-#=DEIJOP     #AFKP
-
-=DEIJP     #AFP
+#=DEIJOP   #AFKP is true.
+=DEIJP    #AFP is true, K is false.
