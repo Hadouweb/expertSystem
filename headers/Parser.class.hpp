@@ -34,7 +34,8 @@ public:
 private:
 	Parser(Parser const & src);
 	Parser & operator=(Parser const & rhs);
-	bool authorizedOperator(e_tk token);
+	bool authorizedOperatorPremise(e_tk token);
+	bool authorizedOperatorConclusion(e_tk token);
 	void skipSpace(void);
 
 	void tkFact(void);
@@ -45,7 +46,6 @@ private:
 	void tkNot(void);
 	void tkOr(void);
 	void tkXor(void);
-	void tkIfAndOnlyIf(void);
 	void tkParOpen(void);
 	void tkParClose(void);
 
@@ -60,7 +60,6 @@ private:
 		{TK_NOT, 			&Parser::tkNot},
 		{TK_OR, 			&Parser::tkOr},
 		{TK_XOR, 			&Parser::tkXor},
-		{TK_IF_AND_ONLY_IF, &Parser::tkIfAndOnlyIf},
 		{TK_PAR_OPEN, 		&Parser::tkParOpen},
 		{TK_PAR_CLOSE, 		&Parser::tkParClose},
     };

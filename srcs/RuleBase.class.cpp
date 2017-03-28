@@ -83,7 +83,7 @@ std::list<ParsedNode *>::iterator RuleBase::makeNPI(
 				}
 			}
 		}
-		if (token == TK_IMPLIE || token == TK_IF_AND_ONLY_IF)
+		if (token == TK_IMPLIE)
 			break ;
 		it++;
 	}
@@ -98,6 +98,21 @@ std::list<ParsedNode *>::iterator RuleBase::makeNPI(
 	return it;
 }
 
+void RuleBase::setIsNotInConclusion(std::list<IObject *> &conclusionList) {
+	std::list<IObject*>::iterator it = conclusionList.begin();
+	std::list<IObject*>::iterator itPrev = conclusionList.end();
+	Fact *f;
+	while (it != conclusionList.end())
+	{
+		if ((*it)->getToken() == TK_NOT)
+			itPrev = std::prev(it, 1);
+		if (itPrev != conclusionList.end() && (*itPrev)->getToken() == TK_FACT) {
+			f = static_cast<Fact*>(*itPrev);
+			f->setIsNot(true);
+		}
+		it++;
+	}
+}
 
 void RuleBase::addRule(std::list<ParsedNode *> & nodeRuleList) {
 	std::list<ParsedNode*>::iterator it = nodeRuleList.begin();
@@ -106,8 +121,6 @@ void RuleBase::addRule(std::list<ParsedNode *> & nodeRuleList) {
 	std::list<IObject*> conclusionList;
 
 	//std::cout << (*it)->getValue() << " " << Node::convertEnumTk((*it)->getToken()) << std::endl;
-
-
 	// Make premise list and linkOperator
 	it = makeNPI(it, nodeRuleList, premiseList);
 	e_tk token = (*it)->getToken();
@@ -115,15 +128,13 @@ void RuleBase::addRule(std::list<ParsedNode *> & nodeRuleList) {
 	/*for (std::list<IObject *>::iterator it = premiseList.begin(); it != premiseList.end(); ++it) {
 		std::cout << (*it)->getName() << " " << Node::convertEnumTk((*it)->getToken()) << std::endl;
 	}
-
 	std::cout << Node::convertEnumTk(token) << std::endl;
 	std::cout << std::endl;*/
-
 	linkOperator = this->addOperator(token);
 	it++;
 
 	makeNPI(it, nodeRuleList, conclusionList);
-
+	this->setIsNotInConclusion(conclusionList);
 	Rule *r = new Rule(premiseList, linkOperator, conclusionList);
 	this->_ruleList.push_back(r);
 }
@@ -131,15 +142,25 @@ void RuleBase::addRule(std::list<ParsedNode *> & nodeRuleList) {
 Rule *RuleBase::getRuleByConclusion(Fact *f) {
 	for (std::list<Rule *>::reverse_iterator itR = this->_ruleList.rbegin();
 		itR != this->_ruleList.rend(); ++itR) {
-		if ((*itR)->used == false) {
+		//if ((*itR)->used == false) {
 			std::list<IObject*> cList = (*itR)->getConclusionList();
 			for (std::list<IObject *>::iterator itC = cList.begin(); itC != cList.end(); ++itC) {
-				if ((*itC)->getName() == f->getName()) {
-					(*itR)->used = true;
-					return *itR;
+				if ((*itC)->getToken() == TK_FACT) {
+					Fact *fR = static_cast<Fact*>(*itC);
+					if (fR->getUsedRule() == false || (*itR)->used == false) {
+						if (f->getName() == "L") {
+							std::cout << "---1 " << f->toString(false, false) << std::endl;
+							std::cout << "---2 " << (*itC)->toString(false, false) << std::endl;
+						}
+						if ((*itC)->getName() == f->getName()) {
+							(*itR)->used = true;
+							fR->setUsedRule(true);
+							return *itR;
+						}
+					}
 				}
 			}
-		}
+		//}
 	}
 	return NULL;
 }

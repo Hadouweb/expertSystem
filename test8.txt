@@ -13,4 +13,4 @@ A | B + C   => E
 #=G
 #=H
 #=FH    # E
-#=GH    # E
+=GH    # E

@@ -16,9 +16,11 @@ public:
 	void initRule(std::list<ParsedNode*> parsedList);
 	void addRule( std::list<ParsedNode*> & nodeRuleList);
 	void printAllRule(void) const;
+	void setIsNotInConclusion(std::list<IObject*> & conclusionList);
 	Rule * getRuleByConclusion(Fact * f);
 	std::list<Operator *> getOperator(void) const;
-	std::list<ParsedNode *>::iterator makeNPI(std::list<ParsedNode *>::iterator & it,
+	std::list<ParsedNode *>::iterator makeNPI(
+		std::list<ParsedNode *>::iterator & it,
 		std::list<ParsedNode *> & nodeRuleList,
 		std::list<IObject *> & objList);
 

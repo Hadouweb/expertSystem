@@ -29,8 +29,6 @@ std::string Node::convertEnumTk(e_tk e) {
 			return "TK_QUERY";
 		case TK_IMPLIE:
 			return "TK_IMPLIE";
-		case TK_IF_AND_ONLY_IF:
-			return "TK_IF_AND_ONLY_IF";
 		case TK_PLUS:
 			return "TK_PLUS";
 		case TK_NOT:

@@ -44,13 +44,22 @@ void Parser::makeParsing(void) {
 	}
 }
 
-bool Parser::authorizedOperator(e_tk token) {
+bool Parser::authorizedOperatorPremise(e_tk token) {
 	switch (token) {
 		case TK_PLUS:
 			return true;
 		case TK_OR:
 			return true;
 		case TK_XOR:
+			return true;
+		default:
+			return false;
+	}
+}
+
+bool Parser::authorizedOperatorConclusion(e_tk token) {
+	switch (token) {
+		case TK_PLUS:
 			return true;
 		default:
 			return false;
@@ -74,7 +83,7 @@ void Parser::tkFact(void) {
 
 	while (tmpIt != this->_nodeList.begin()) {
 		tmpIt--;
-		if (this->authorizedOperator((*tmpIt)->getToken()))
+		if (this->authorizedOperatorConclusion((*tmpIt)->getToken()))
 			opMod = true;
 		if ((*tmpIt)->getToken() == TK_FACT) {
 			if (opMod == true)
@@ -82,8 +91,7 @@ void Parser::tkFact(void) {
 			else
 				break;
 		}
-		if ((*tmpIt)->getToken() == TK_IMPLIE ||
-			(*tmpIt)->getToken() == TK_IF_AND_ONLY_IF) {
+		if ((*tmpIt)->getToken() == TK_IMPLIE) {
 			leftFact = true;
 			break;
 		}
@@ -94,7 +102,7 @@ void Parser::tkFact(void) {
 	tmpIt = it;
 	opMod = true;
 	while (tmpIt != this->_nodeList.end()) {
-		if (this->authorizedOperator((*tmpIt)->getToken()))
+		if (this->authorizedOperatorPremise((*tmpIt)->getToken()))
 			opMod = true;
 		if ((*tmpIt)->getToken() == TK_FACT) {
 			if (opMod == true)
@@ -102,8 +110,7 @@ void Parser::tkFact(void) {
 			else
 				break;
 		}
-		if ((*tmpIt)->getToken() == TK_IMPLIE ||
-			(*tmpIt)->getToken() == TK_IF_AND_ONLY_IF) {
+		if ((*tmpIt)->getToken() == TK_IMPLIE) {
 			rightFact = true;
 			break;
 		}
@@ -334,43 +341,6 @@ void Parser::tkXor(void) {
 	it++;
 }
 
-void Parser::tkIfAndOnlyIf(void) {
-	std::list<Node*>::iterator & it = this->_currentIt;
-	std::list<Node*>::iterator tmpIt = it;
-	bool leftFact = false;
-	bool rightFact = false;
-
-	while (tmpIt != this->_nodeList.begin()) {
-		tmpIt--;
-		if ((*tmpIt)->getToken() == TK_FACT) {
-			leftFact = true;
-			break;
-		} else if ((*tmpIt)->getToken() != TK_WHITE_SPACE &&
-				   (*tmpIt)->getToken() != TK_PAR_CLOSE)
-			break;
-	}
-
-	if (leftFact) {
-		tmpIt = it;
-		while (tmpIt != this->_nodeList.end()) {
-			tmpIt++;
-			if ((*tmpIt)->getToken() == TK_FACT) {
-				rightFact = true;
-				break;
-			} else if ((*tmpIt)->getToken() != TK_WHITE_SPACE &&
-					   (*tmpIt)->getToken() != TK_NOT &&
-					   (*tmpIt)->getToken() != TK_PAR_OPEN)
-				break;
-		}
-		if (rightFact) {
-			this->_parsedNodeList.push_back(new ParsedNode((*it)->getToken(), (*it)->getValue()));
-		} else
-			this->pushError((*it)->getNumCol(), (*it)->getNumLine(), "Unexpected token from IfAndOnlyIf");
-	} else
-		this->pushError((*it)->getNumCol(), (*it)->getNumLine(), "Unexpected token from IfAndOnlyIf");
-	it++;
-}
-
 void Parser::tkParOpen(void) {
 	std::list<Node*>::iterator & it = this->_currentIt;
 	std::list<Node*>::iterator tmpIt = it;
@@ -390,8 +360,7 @@ void Parser::tkParOpen(void) {
 				rightParClose = true;
 		}
 		if ((*tmpIt)->getToken() == TK_END_LINE ||
-			(*tmpIt)->getToken() == TK_IMPLIE ||
-			(*tmpIt)->getToken() == TK_IF_AND_ONLY_IF)
+			(*tmpIt)->getToken() == TK_IMPLIE)
 			break;
 		tmpIt++;
 	}
@@ -423,8 +392,7 @@ void Parser::tkParClose(void) {
 				rightParOpen = true;
 		}
 		if ((*tmpIt)->getToken() == TK_END_LINE ||
-			(*tmpIt)->getToken() == TK_IMPLIE ||
-			(*tmpIt)->getToken() == TK_IF_AND_ONLY_IF)
+			(*tmpIt)->getToken() == TK_IMPLIE)
 			break;
 	}
 

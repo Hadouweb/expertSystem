@@ -13,10 +13,9 @@ Motor::Motor(std::list<ParsedNode *> parsedList)
 
 	this->initQueryFact();
 
-	//this->_fDB->printAllFact();
-	//std::cout << std::endl;
+	this->_fDB->printAllFact();
+	std::cout << std::endl;
 	//this->_rDB->printAllRule();
-
 	if (Parser::errorList.size() > 0) {
 		Parser::printError();
 		exit(1);
@@ -24,8 +23,7 @@ Motor::Motor(std::list<ParsedNode *> parsedList)
 
 	//std::cout << "*********************************************" << std::endl;
 	this->searchQuery();
-
-	//this->_fDB->printAllFact();
+	this->_fDB->printAllFact();
 	this->printQueryFact();
 }
 

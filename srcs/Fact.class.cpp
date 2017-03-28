@@ -2,12 +2,13 @@
 #include "Fact.class.hpp"
 
 Fact::Fact(e_tk token, std::string name, uint8_t value)
-	: _token(token), _name(name), _value(value) {
+	: 	_token(token), _name(name), _value(value),
+		_isFactBase(false), _isNot(false), _usedRule(false) {
 
 }
 
 Fact::Fact(void)
-	: _token(NB_TK) {
+	: _token(NB_TK), _isFactBase(false), _isNot(false), _usedRule(false) {
 
 }
 
@@ -47,7 +48,8 @@ std::string Fact::toString(bool withParent, bool withChild) const {
 	if (withParent && this->getParent())
 		ss << "\t" << "Parent: " << this->getParent()->toString(false, false) << std::endl;
 	ss << "Name: " << this->getName() << " Value " << static_cast<int>(this->getValue());
-	ss << " isFactBase: " << this->getIsFactBase() << std::endl;
+	ss << " isFactBase: " << this->getIsFactBase();
+	ss << " isNot: " << this->getIsNot() << std::endl;
 	if (withChild) {
 		std::list<IObject*> child = this->getChild();
 		for (std::list<IObject *>::const_iterator itC = child.begin();
@@ -89,6 +91,22 @@ bool Fact::getIsFactBase() const {
 
 void Fact::setIsFactBase(bool isFactBase) {
 	this->_isFactBase = isFactBase;
+}
+
+bool Fact::getIsNot(void) const {
+	return this->_isNot;
+}
+
+void Fact::setIsNot(bool isNot) {
+	this->_isNot = isNot;
+}
+
+bool Fact::getUsedRule(void) const {
+	return this->_usedRule;
+}
+
+void Fact::setUsedRule(bool usedRule) {
+	this->_usedRule = usedRule;
 }
 
 std::ostream &operator<<(std::ostream &os, Fact *f) {

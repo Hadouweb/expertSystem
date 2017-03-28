@@ -2,6 +2,7 @@
 # define GRAPH_CLASS_HPP
 
 #include "IObject.hpp"
+#include "Fact.class.hpp"
 #include <iostream>
 #include <map>
 #include <list>

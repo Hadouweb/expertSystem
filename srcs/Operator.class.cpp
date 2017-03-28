@@ -59,13 +59,12 @@ std::string Operator::toString(bool withParent, bool withChild) const {
 		case TK_IMPLIE:
 			ss << "Name: " << "[=>]" << indexStrDebug;
 			break;
-		case TK_IF_AND_ONLY_IF:
-			ss << "Name: " << "[<=>]" << indexStrDebug;
-			break;
 		default:
 			ss << "Name: " << "???" << std::endl;
 	}
+	ss << " Value " << static_cast<int>(this->getValue());
 	if (withChild) {
+		ss << std::endl;
 		std::list<IObject*> child = this->getChild();
 		for (std::list<IObject *>::const_iterator itC = child.begin();
 			itC != child.end(); ++itC) {

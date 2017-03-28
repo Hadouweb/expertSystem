@@ -77,7 +77,6 @@ e_sts Lexer::funcName(const char c, const uint8_t index) { \
 TOKEN_DEFINE_1(tkInitFact, "=");
 TOKEN_DEFINE_1(tkQuery, "?");
 TOKEN_DEFINE_2(tkImplie, "=>");
-TOKEN_DEFINE_3(tkIfAndOnlyIf, "<=>");
 TOKEN_DEFINE_1(tkPlus, "+");
 TOKEN_DEFINE_1(tkNot, "!");
 TOKEN_DEFINE_1(tkOr, "|");

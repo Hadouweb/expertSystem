@@ -4,8 +4,8 @@ B       => C
 
 ?A
 
-=       # A->false
+#=       # A->false
 
 #=D     # A
 #=E     # A
-#=DE    # A->false
+=DE    # A->false

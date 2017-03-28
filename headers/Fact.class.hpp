@@ -14,8 +14,12 @@ public:
 
 	std::string getName(void) const;
 	std::string toString(bool withParent, bool withChild) const;
-	bool getIsFactBase() const;
+	bool getIsFactBase(void) const;
 	void setIsFactBase(bool isFactBase);
+	bool getIsNot(void) const;
+	void setIsNot(bool isNot);
+	bool getUsedRule(void) const;
+	void setUsedRule(bool usedRule);
 	virtual e_tk getToken(void) const;
 	virtual uint8_t getValue(void) const;
 	virtual void setValue(uint8_t val);
@@ -38,6 +42,8 @@ private:
 	const std::string _name;
 	uint8_t _value;
 	bool _isFactBase;
+	bool _isNot;
+	bool _usedRule;
 };
 
 std::ostream & operator<<(std::ostream & os, Fact *f);

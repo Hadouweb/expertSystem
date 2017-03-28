@@ -19,8 +19,10 @@ Graph & Graph::operator=(Graph const & rhs) {
 }
 
 void Graph::addLink(IObject * parent, IObject * child) {
-	child->setParent(parent);
-	parent->addChild(child);
+	if (child && parent) {
+		child->setParent(parent);
+		parent->addChild(child);
+	}
 }
 
 void Graph::printAllNode(void) const {
@@ -34,7 +36,7 @@ std::map<int, IObject*> Graph::getObjectMap(void) const {
 }
 
 void Graph::execOp(IObject *curr, IObject *a, IObject *b) {
-	//std::cout << "LOL " << curr->toString(false, false) << std::endl;
+	//std::cout << "# " << curr->toString(false, false) << std::endl;
 	switch(curr->getToken()) {
 		case TK_PLUS: {
 			if (a->getValue() == 1 && b->getValue() == 1)
@@ -53,10 +55,20 @@ void Graph::execOp(IObject *curr, IObject *a, IObject *b) {
 		}
 		case TK_FACT: {
 			curr->setValue(a->getValue());
+			Fact *f = static_cast<Fact*>(curr);
+			if (f->getIsNot()) {
+				if (f->getValue() == 0)
+					f->setValue(1);
+				else if (f->getValue() == 1)
+					f->setValue(0);
+			}
 			break;
 		}
 		case TK_NOT: {
-			curr->setValue(!a->getValue());
+			if (a->getValue() == 0)
+				curr->setValue(1);
+			if (a->getValue() == 1)
+				curr->setValue(0);
 			break;
 		}
 		default:
@@ -90,6 +102,6 @@ void Graph::exploreDFS(IObject *node) {
 		std::list<IObject *>::iterator itA = childList.begin();
 		this->execOp(node, *itA, NULL);
 	}
-	//std::cout << node->toString(true, false) << std::endl;
-	//std::cout << "-----------------------------------------" << std::endl;
+	std::cout << node->toString(true, true) << std::endl;
+	std::cout << "-----------------------------------------" << std::endl;
 }

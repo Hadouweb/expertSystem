@@ -54,7 +54,6 @@ private:
 	e_sts tkNot(const char c, const uint8_t index);
 	e_sts tkOr(const char c, const uint8_t index);
 	e_sts tkXor(const char c, const uint8_t index);
-	e_sts tkIfAndOnlyIf(const char c, const uint8_t index);
 	e_sts tkParOpen(const char c, const uint8_t index);
 	e_sts tkParClose(const char c, const uint8_t index);
 	e_sts tkComment(const char c, const uint8_t index);
@@ -76,7 +75,6 @@ private:
 		&Lexer::tkOr,
 		&Lexer::tkXor,
 		&Lexer::tkImplie,
-		&Lexer::tkIfAndOnlyIf,
 		&Lexer::tkComment,
 		&Lexer::tkEndLine,
 		&Lexer::tkWhiteSpace,
