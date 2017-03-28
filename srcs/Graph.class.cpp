@@ -54,15 +54,16 @@ void Graph::execOp(IObject *curr, IObject *a, IObject *b) {
 			break;
 		}
 		case TK_FACT: {
-			if (curr->getValue() != 1)
-				curr->setValue(a->getValue());
+			curr->setValue(a->getValue());
 			Fact *f = static_cast<Fact*>(curr);
 			if (f->getIsNot()) {
 				if (f->getValue() == 0)
-					f->setValue(1);
+					curr->setValue(1);
 				else if (f->getValue() == 1)
-					f->setValue(0);
+					curr->setValue(0);
 			}
+			if (f->getIsFactBase())
+				curr->setValue(1);
 			break;
 		}
 		case TK_NOT: {
