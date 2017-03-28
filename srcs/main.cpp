@@ -8,8 +8,10 @@ int		main(int ac, char **av) {
 
 	if (ac > 1)
 		l = new Lexer(av[1]);
-	else
-		l = new Lexer();
+	else {
+		std::cerr << "Usage: " << av[0] << " file" << std::endl;
+		exit(1);
+	}
 
 	std::list<Node*> nodeList = l->getNodeList();
 	std::list<Node*> errorList = l->getErrorList();

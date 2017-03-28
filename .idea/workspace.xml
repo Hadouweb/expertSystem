@@ -30,27 +30,31 @@
           <file leaf-file-name="Fact.class.cpp" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/srcs/Fact.class.cpp">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="1944">
+                <state relative-caret-position="1198">
                   <caret line="108" column="31" lean-forward="false" selection-start-line="108" selection-start-column="31" selection-end-line="108" selection-end-column="31" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="main.cpp" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/srcs/main.cpp">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="198">
+                  <caret line="11" column="17" lean-forward="false" selection-start-line="11" selection-start-column="17" selection-end-line="11" selection-end-column="17" />
                   <folding>
-                    <marker date="1490709179000" expanded="true" signature="303:307" ph="{...}" />
-                    <marker date="1490709179000" expanded="true" signature="359:376" ph="{...}" />
-                    <marker date="1490709179000" expanded="true" signature="396:400" ph="{...}" />
-                    <marker date="1490709179000" expanded="true" signature="441:483" ph="{...}" />
-                    <marker date="1490709179000" expanded="true" signature="523:547" ph="{...}" />
-                    <marker date="1490709179000" expanded="true" signature="584:609" ph="{...}" />
-                    <marker date="1490709179000" expanded="true" signature="644:668" ph="{...}" />
-                    <marker date="1490709179000" expanded="true" signature="702:727" ph="{...}" />
-                    <marker date="1490709179000" expanded="true" signature="795:1397" ph="{...}" />
-                    <marker date="1490709179000" expanded="true" signature="1431:1466" ph="{...}" />
-                    <marker date="1490709179000" expanded="true" signature="1516:1545" ph="{...}" />
-                    <marker date="1490709179000" expanded="true" signature="1580:1603" ph="{...}" />
-                    <marker date="1490709179000" expanded="true" signature="1642:1668" ph="{...}" />
-                    <marker date="1490709179000" expanded="true" signature="1702:1728" ph="{...}" />
-                    <marker date="1490709179000" expanded="true" signature="1764:1791" ph="{...}" />
-                    <marker date="1490709179000" expanded="true" signature="1826:1856" ph="{...}" />
-                    <marker date="1490709179000" expanded="true" signature="1900:1936" ph="{...}" />
+                    <element signature="e#0#19#0" expanded="true" />
                   </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="test2.txt" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/test2.txt">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="0">
+                  <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+                  <folding />
                 </state>
               </provider>
             </entry>
@@ -67,7 +71,7 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="Graph.class.cpp" pinned="false" current-in-tab="true">
+          <file leaf-file-name="Graph.class.cpp" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/srcs/Graph.class.cpp">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="1216">
@@ -197,6 +201,7 @@
         <option value="$PROJECT_DIR$/srcs/RuleBase.class.cpp" />
         <option value="$PROJECT_DIR$/srcs/Motor.class.cpp" />
         <option value="$PROJECT_DIR$/srcs/Graph.class.cpp" />
+        <option value="$PROJECT_DIR$/srcs/main.cpp" />
       </list>
     </option>
   </component>
@@ -482,25 +487,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1944">
           <caret line="108" column="31" lean-forward="false" selection-start-line="108" selection-start-column="31" selection-end-line="108" selection-end-column="31" />
-          <folding>
-            <marker date="1490709179000" expanded="true" signature="303:307" ph="{...}" />
-            <marker date="1490709179000" expanded="true" signature="359:376" ph="{...}" />
-            <marker date="1490709179000" expanded="true" signature="396:400" ph="{...}" />
-            <marker date="1490709179000" expanded="true" signature="441:483" ph="{...}" />
-            <marker date="1490709179000" expanded="true" signature="523:547" ph="{...}" />
-            <marker date="1490709179000" expanded="true" signature="584:609" ph="{...}" />
-            <marker date="1490709179000" expanded="true" signature="644:668" ph="{...}" />
-            <marker date="1490709179000" expanded="true" signature="702:727" ph="{...}" />
-            <marker date="1490709179000" expanded="true" signature="795:1397" ph="{...}" />
-            <marker date="1490709179000" expanded="true" signature="1431:1466" ph="{...}" />
-            <marker date="1490709179000" expanded="true" signature="1516:1545" ph="{...}" />
-            <marker date="1490709179000" expanded="true" signature="1580:1603" ph="{...}" />
-            <marker date="1490709179000" expanded="true" signature="1642:1668" ph="{...}" />
-            <marker date="1490709179000" expanded="true" signature="1702:1728" ph="{...}" />
-            <marker date="1490709179000" expanded="true" signature="1764:1791" ph="{...}" />
-            <marker date="1490709179000" expanded="true" signature="1826:1856" ph="{...}" />
-            <marker date="1490709179000" expanded="true" signature="1900:1936" ph="{...}" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -628,6 +615,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="320">
           <caret line="35" column="30" lean-forward="false" selection-start-line="35" selection-start-column="30" selection-end-line="35" selection-end-column="30" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -692,13 +680,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test2.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/headers/RuleBase.class.hpp">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="324">
@@ -724,32 +705,6 @@
         <state relative-caret-position="378">
           <caret line="21" column="20" lean-forward="false" selection-start-line="21" selection-start-column="9" selection-end-line="21" selection-end-column="20" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/srcs/Fact.class.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1944">
-          <caret line="108" column="31" lean-forward="false" selection-start-line="108" selection-start-column="31" selection-end-line="108" selection-end-column="31" />
-          <folding>
-            <marker date="1490709179000" expanded="true" signature="303:307" ph="{...}" />
-            <marker date="1490709179000" expanded="true" signature="359:376" ph="{...}" />
-            <marker date="1490709179000" expanded="true" signature="396:400" ph="{...}" />
-            <marker date="1490709179000" expanded="true" signature="441:483" ph="{...}" />
-            <marker date="1490709179000" expanded="true" signature="523:547" ph="{...}" />
-            <marker date="1490709179000" expanded="true" signature="584:609" ph="{...}" />
-            <marker date="1490709179000" expanded="true" signature="644:668" ph="{...}" />
-            <marker date="1490709179000" expanded="true" signature="702:727" ph="{...}" />
-            <marker date="1490709179000" expanded="true" signature="795:1397" ph="{...}" />
-            <marker date="1490709179000" expanded="true" signature="1431:1466" ph="{...}" />
-            <marker date="1490709179000" expanded="true" signature="1516:1545" ph="{...}" />
-            <marker date="1490709179000" expanded="true" signature="1580:1603" ph="{...}" />
-            <marker date="1490709179000" expanded="true" signature="1642:1668" ph="{...}" />
-            <marker date="1490709179000" expanded="true" signature="1702:1728" ph="{...}" />
-            <marker date="1490709179000" expanded="true" signature="1764:1791" ph="{...}" />
-            <marker date="1490709179000" expanded="true" signature="1826:1856" ph="{...}" />
-            <marker date="1490709179000" expanded="true" signature="1900:1936" ph="{...}" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -825,6 +780,32 @@
         <state relative-caret-position="1216">
           <caret line="104" column="6" lean-forward="false" selection-start-line="104" selection-start-column="6" selection-end-line="104" selection-end-column="6" />
           <caret line="105" column="6" lean-forward="false" selection-start-line="105" selection-start-column="6" selection-end-line="105" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/srcs/Fact.class.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1198">
+          <caret line="108" column="31" lean-forward="false" selection-start-line="108" selection-start-column="31" selection-end-line="108" selection-end-column="31" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/srcs/main.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="198">
+          <caret line="11" column="17" lean-forward="false" selection-start-line="11" selection-start-column="17" selection-end-line="11" selection-end-column="17" />
+          <folding>
+            <element signature="e#0#19#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test2.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
