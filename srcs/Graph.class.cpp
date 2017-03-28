@@ -102,6 +102,6 @@ void Graph::exploreDFS(IObject *node) {
 		std::list<IObject *>::iterator itA = childList.begin();
 		this->execOp(node, *itA, NULL);
 	}
-	std::cout << node->toString(true, true) << std::endl;
-	std::cout << "-----------------------------------------" << std::endl;
+	//std::cout << node->toString(true, true) << std::endl;
+	//std::cout << "-----------------------------------------" << std::endl;
 }

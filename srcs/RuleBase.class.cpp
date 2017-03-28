@@ -142,25 +142,19 @@ void RuleBase::addRule(std::list<ParsedNode *> & nodeRuleList) {
 Rule *RuleBase::getRuleByConclusion(Fact *f) {
 	for (std::list<Rule *>::reverse_iterator itR = this->_ruleList.rbegin();
 		itR != this->_ruleList.rend(); ++itR) {
-		//if ((*itR)->used == false) {
-			std::list<IObject*> cList = (*itR)->getConclusionList();
-			for (std::list<IObject *>::iterator itC = cList.begin(); itC != cList.end(); ++itC) {
-				if ((*itC)->getToken() == TK_FACT) {
-					Fact *fR = static_cast<Fact*>(*itC);
-					if (fR->getUsedRule() == false || (*itR)->used == false) {
-						if (f->getName() == "L") {
-							std::cout << "---1 " << f->toString(false, false) << std::endl;
-							std::cout << "---2 " << (*itC)->toString(false, false) << std::endl;
-						}
-						if ((*itC)->getName() == f->getName()) {
-							(*itR)->used = true;
-							fR->setUsedRule(true);
-							return *itR;
-						}
+		std::list<IObject*> cList = (*itR)->getConclusionList();
+		for (std::list<IObject *>::iterator itC = cList.begin(); itC != cList.end(); ++itC) {
+			if ((*itC)->getToken() == TK_FACT) {
+				Fact *fR = static_cast<Fact*>(*itC);
+				if (fR->getUsedRule() == false || (*itR)->used == false) {
+					if ((*itC)->getName() == f->getName()) {
+						(*itR)->used = true;
+						fR->setUsedRule(true);
+						return *itR;
 					}
 				}
 			}
-		//}
+		}
 	}
 	return NULL;
 }
