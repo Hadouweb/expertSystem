@@ -1,6 +1,5 @@
-(A | B) + F    => R + D
-F ^ C          => !B
+A => Z
 
-=F
+=AF
 
-?D
+?ZB

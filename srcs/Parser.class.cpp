@@ -187,11 +187,13 @@ void Parser::tkImplie(void) {
 
 	while (tmpIt != this->_nodeList.begin()) {
 		tmpIt--;
-		if ((*tmpIt)->getToken() == TK_FACT) {
+		if ((*tmpIt)->getToken() == TK_FACT)
 			leftFact = true;
+		else if ((*tmpIt)->getToken() == TK_IMPLIE) {
+			leftFact = false;
 			break;
 		} else if ((*tmpIt)->getToken() != TK_WHITE_SPACE &&
-				   (*tmpIt)->getToken() != TK_PAR_CLOSE)
+			   (*tmpIt)->getToken() != TK_PAR_CLOSE)
 			break;
 	}
 
@@ -199,8 +201,10 @@ void Parser::tkImplie(void) {
 		tmpIt = it;
 		while (tmpIt != this->_nodeList.end()) {
 			tmpIt++;
-			if ((*tmpIt)->getToken() == TK_FACT) {
+			if ((*tmpIt)->getToken() == TK_FACT)
 				rightFact = true;
+			else if ((*tmpIt)->getToken() == TK_IMPLIE) {
+				rightFact = false;
 				break;
 			} else if ((*tmpIt)->getToken() != TK_WHITE_SPACE &&
 						(*tmpIt)->getToken() != TK_NOT &&
