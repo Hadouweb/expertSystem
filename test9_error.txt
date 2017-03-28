@@ -1,5 +1,8 @@
-A => Z
+F          => X
+F          => G
+G          => F
+X + G      => D
 
-=AF
+=GD
 
-?ZB
+?X
